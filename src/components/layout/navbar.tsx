@@ -7,7 +7,7 @@ import { Github, Linkedin, Twitter, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useScrollDirection } from '@/hooks/use-scroll-direction';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'; // Added SheetDescription for accessibility
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -39,28 +39,31 @@ export function Navbar() {
   // Separate component for navigation content to avoid repetition
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
     <>
-      {navLinks.map((link) => (
-        <Link
-          key={link.name}
-          href={link.href}
-          className={cn(
-            "text-sm font-medium text-foreground hover:text-accent transition-colors",
-            isMobile && "block py-2 text-lg"
-          )}
-          // Let SheetClose handle closing on mobile
-          // onClick={isMobile ? () => {} : undefined} // Let SheetClose handle this
-        >
-          {isMobile ? (
-            // Wrap the content with SheetClose only on mobile
-            <SheetClose asChild>
-              <span>{link.name}</span>
-            </SheetClose>
-          ) : (
-            // Render the link name directly on desktop
-            <span>{link.name}</span>
-          )}
-        </Link>
-      ))}
+      {navLinks.map((link) => {
+        const LinkComponent = (
+          <Link
+            // Key should be on the outer element if conditional, so moved it outside
+            href={link.href}
+            className={cn(
+              "text-sm font-medium text-foreground hover:text-accent transition-colors",
+              isMobile && "block py-2 text-lg w-full text-center"
+            )}
+          >
+            {link.name}
+          </Link>
+        );
+
+        // Only wrap with SheetClose if it's mobile
+        return isMobile ? (
+          <SheetClose key={link.name} asChild>
+            {/* Pass the Link component as the child */}
+            {React.cloneElement(LinkComponent, { key: undefined })}
+          </SheetClose>
+        ) : (
+          // Render the Link directly for desktop, adding the key here
+          React.cloneElement(LinkComponent, { key: link.name })
+        );
+      })}
       <div className={cn("flex items-center gap-4", isMobile && "mt-4 justify-center")}>
         {socialLinks.map((link) => (
           <Link key={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
@@ -99,8 +102,15 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             {/* SheetContent provides the context for SheetClose */}
-            <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background">
-               <div className="flex flex-col items-center pt-10 gap-4">
+            <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
+               {/* Add SheetHeader and SheetTitle/Description for accessibility */}
+               <SheetHeader className="mb-6 text-left">
+                 <SheetTitle>Navigation Menu</SheetTitle>
+                 <SheetDescription className="sr-only">
+                    Links to different sections of the portfolio.
+                 </SheetDescription>
+               </SheetHeader>
+               <div className="flex flex-col items-center gap-4">
                  {/* Render NavContent inside the SheetContent */}
                  <NavContent isMobile={true} />
                </div>

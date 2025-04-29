@@ -17,7 +17,7 @@ export function Footer() {
         <p className="text-sm">&copy; {new Date().getFullYear()} PersonaFlow. All rights reserved.</p>
 
         {/* Sticky Social Icons for Desktop */}
-        <div className="hidden md:flex fixed bottom-4 right-4 flex-col gap-3 z-40">
+        <div className="hidden md:flex fixed bottom-4 left-4 flex-col gap-3 z-40"> {/* Changed right-4 to left-4 */}
            {socialLinks.map((link) => (
             <Link
               key={link.name}
