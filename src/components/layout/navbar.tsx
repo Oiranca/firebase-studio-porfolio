@@ -47,9 +47,13 @@ export function Navbar() {
             isMobile && "block py-2 text-lg"
           )}
         >
-          <SheetClose asChild={isMobile}>
+          {isMobile ? (
+            <SheetClose asChild>
+              <span>{link.name}</span>
+            </SheetClose>
+          ) : (
             <span>{link.name}</span>
-          </SheetClose>
+          )}
         </Link>
       ))}
       <div className={cn("flex items-center gap-4", isMobile && "mt-4 justify-center")}>
@@ -76,7 +80,7 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <NavContent />
+          <NavContent isMobile={false} />
         </div>
 
         {/* Mobile Navigation */}
@@ -99,3 +103,4 @@ export function Navbar() {
     </nav>
   );
 }
+
