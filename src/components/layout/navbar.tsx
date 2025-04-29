@@ -36,6 +36,7 @@ export function Navbar() {
     // On initial load or if scrollDirection is null, keep it visible
   }, [scrollDirection]);
 
+  // Separate component for navigation content to avoid repetition
   const NavContent = ({ isMobile = false }: { isMobile?: boolean }) => (
     <>
       {navLinks.map((link) => (
@@ -46,12 +47,16 @@ export function Navbar() {
             "text-sm font-medium text-foreground hover:text-accent transition-colors",
             isMobile && "block py-2 text-lg"
           )}
+          // Let SheetClose handle closing on mobile
+          // onClick={isMobile ? () => {} : undefined} // Let SheetClose handle this
         >
           {isMobile ? (
+            // Wrap the content with SheetClose only on mobile
             <SheetClose asChild>
               <span>{link.name}</span>
             </SheetClose>
           ) : (
+            // Render the link name directly on desktop
             <span>{link.name}</span>
           )}
         </Link>
@@ -65,6 +70,7 @@ export function Navbar() {
       </div>
     </>
   );
+
 
   return (
     <nav
@@ -92,8 +98,10 @@ export function Navbar() {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
+            {/* SheetContent provides the context for SheetClose */}
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background">
                <div className="flex flex-col items-center pt-10 gap-4">
+                 {/* Render NavContent inside the SheetContent */}
                  <NavContent isMobile={true} />
                </div>
             </SheetContent>
@@ -103,4 +111,3 @@ export function Navbar() {
     </nav>
   );
 }
-
