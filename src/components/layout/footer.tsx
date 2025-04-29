@@ -13,11 +13,12 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="bg-secondary text-secondary-foreground py-6 mt-16 relative">
-      <div className="container mx-auto px-4 text-center">
-        <p className="text-sm">&copy; {new Date().getFullYear()} PersonaFlow. All rights reserved.</p>
+      {/* Container for vertical centering */}
+      <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full">
+        <p className="text-sm mb-4">&copy; {new Date().getFullYear()} PersonaFlow. All rights reserved.</p>
 
-        {/* Sticky Social Icons for Desktop */}
-        <div className="hidden md:flex fixed bottom-4 left-4 flex-col gap-3 z-40"> {/* Changed right-4 to left-4 */}
+        {/* Sticky Social Icons for Desktop (Positioned independently) */}
+        <div className="hidden md:flex fixed bottom-4 left-4 flex-col gap-3 z-40">
            {socialLinks.map((link) => (
             <Link
               key={link.name}
@@ -32,8 +33,8 @@ export function Footer() {
           ))}
         </div>
 
-         {/* Social Icons in Footer for Mobile */}
-        <div className="md:hidden flex justify-center gap-4 mt-4">
+         {/* Social Icons in Footer for Mobile (Now part of the centered flex column) */}
+        <div className="md:hidden flex justify-center gap-4"> {/* Removed mt-4 as mb-4 on p handles spacing */}
           {socialLinks.map((link) => (
             <Link key={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
               <link.icon className="h-6 w-6 text-muted-foreground hover:text-accent transition-colors" aria-label={link.name} />
