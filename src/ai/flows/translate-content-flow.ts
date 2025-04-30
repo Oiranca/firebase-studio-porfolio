@@ -116,10 +116,15 @@ export async function translateContent(input: TranslatableContentInput): Promise
 
 
 // --- Genkit Prompt ---
-// Uses the TranslatableContentSchema for input and output.
+// Input schema is a simple object with the stringified JSON.
+// Output schema is the TranslatableContentSchema (the structure we want back).
 const translatePrompt = ai.definePrompt({
   name: 'translatePortfolioContentPrompt',
-  input: { schema: TranslatableContentSchema },
+  input: {
+    schema: z.object({
+      jsonInputString: z.string().describe("The JSON string representation of the content to be translated.")
+    })
+  },
   output: { schema: TranslatableContentSchema },
   // Updated prompt for better clarity and JSON handling instructions
   prompt: `Translate the textual content of the following JSON object from English to Spanish.
@@ -133,7 +138,7 @@ const translatePrompt = ai.definePrompt({
 
   Input Content (English - Only Translatable Fields):
   \`\`\`json
-  {{JSON.stringify input}}
+  {{{jsonInputString}}}
   \`\`\`
 
   Translate the values into Spanish, maintaining the exact same JSON structure. Respond ONLY with the valid translated JSON object.`,
@@ -155,7 +160,12 @@ const translateContentFlow = ai.defineFlow<
     console.log("Translatable content received by flow:", JSON.stringify(translatableContent, null, 2));
 
     try {
-        const { output } = await translatePrompt(translatableContent);
+        // Stringify the input for the prompt
+        const jsonInputString = JSON.stringify(translatableContent);
+        console.log("Stringified JSON being sent to prompt:", jsonInputString);
+
+        // Call the prompt with the stringified input
+        const { output } = await translatePrompt({ jsonInputString });
 
         // DETAILED LOGGING: Log the raw output immediately after receiving it
         console.log("Raw translation output received from AI model:", JSON.stringify(output, null, 2));
