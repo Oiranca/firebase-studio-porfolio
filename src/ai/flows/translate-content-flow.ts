@@ -109,6 +109,7 @@ const translatePrompt = ai.definePrompt({
   name: 'translatePortfolioContentPrompt',
   input: { schema: TranslatableContentSchema },
   output: { schema: TranslatableContentSchema },
+  // Removed explicit JSON.stringify - Genkit handles object input based on schema
   prompt: `Translate the following JSON content structure from English to Spanish.
 Only translate the textual content provided (like titles, names, descriptions, skill names, button text, copyright text).
 Do NOT translate URLs, IDs, brand names (like 'React', 'Next.js', 'GitHub'), or technical terms that are commonly used in English in the Spanish tech community (like 'Docker', 'Git').
@@ -118,7 +119,7 @@ For the copyright field, keep the '{year}' placeholder intact.
 
 Input Content (English - Only Translatable Fields):
 \`\`\`json
-{{{JSON.stringify input}}}
+{{input}}
 \`\`\`
 
 Translate the values into Spanish, maintaining the exact same JSON structure. Respond ONLY with the translated JSON object.`,
