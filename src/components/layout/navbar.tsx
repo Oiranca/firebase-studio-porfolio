@@ -21,6 +21,14 @@ export function Navbar() {
     } else if (scrollDirection === "up") {
       setIsVisible(true);
     }
+    // Reset visibility if scroll stops (optional, depends on desired behavior)
+    // const timer = setTimeout(() => {
+    //   if (scrollDirection !== null) { // Check if scrolling has happened
+    //     // Add logic if needed when scroll stops, e.g., always show navbar
+    //   }
+    // }, 150); // Adjust timeout as needed
+    // return () => clearTimeout(timer);
+
   }, [scrollDirection]);
 
   // Separate component for navigation content to avoid repetition
@@ -28,27 +36,32 @@ export function Navbar() {
     <>
       {content.navLinks.map((link) => { // Use dynamic content
         const LinkComponent = (
-          <Link
-            href={link.href}
-            className={cn(
-              "text-sm font-medium text-foreground hover:text-accent transition-colors",
-              isMobile && "block py-2 text-lg w-full text-center"
-            )}
-          >
-            {link.name}
-          </Link>
-        );
+           <Link
+             href={link.href}
+             className={cn(
+               "text-sm font-medium text-foreground hover:text-accent transition-colors",
+               isMobile && "block py-2 text-lg w-full text-center hover:bg-accent/10 rounded" // Added hover bg for mobile
+             )}
+            >
+             {link.name}
+           </Link>
+         );
 
-        return isMobile ? (
-          <SheetClose key={link.name} asChild>
-            {React.cloneElement(LinkComponent, { key: undefined })}
-          </SheetClose>
-        ) : (
-          React.cloneElement(LinkComponent, { key: link.name })
-        );
+
+         return isMobile ? (
+            // Wrap SheetClose around the Link for mobile to close the sheet on navigation
+            <SheetClose key={link.name} asChild>
+                {LinkComponent}
+            </SheetClose>
+         ) : (
+            // Render Link directly for desktop
+            React.cloneElement(LinkComponent, { key: link.name })
+         );
+
       })}
     </>
   );
+
 
   const translationButtonText = language === 'en'
     ? content.translationButton.toSpanish
@@ -61,15 +74,18 @@ export function Navbar() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div className="container mx-auto px-4 py-3 flex items-center"> {/* Removed justify-between */}
         <Link href="/" className="text-lg font-bold text-primary hover:text-accent transition-colors">
           PersonaFlow
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop Navigation - Centered */}
+        <div className="hidden md:flex flex-grow justify-center items-center gap-6"> {/* Added flex-grow and justify-center */}
           <NavContent isMobile={false} />
-          {/* Translation Toggle Button - Desktop */}
+        </div>
+
+        {/* Buttons on the right */}
+        <div className="hidden md:flex items-center"> {/* Wrapper for buttons */}
           <Button
             variant="ghost"
             size="sm"
@@ -86,8 +102,8 @@ export function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center gap-2"> {/* Added gap for mobile */}
+        {/* Mobile Navigation - Remains aligned to the right */}
+        <div className="md:hidden flex items-center gap-2 ml-auto"> {/* Added ml-auto to push mobile controls right */}
            {/* Translation Toggle Button - Mobile (Icon Only) */}
            <Button
              variant="ghost"
@@ -113,12 +129,13 @@ export function Navbar() {
              </SheetTrigger>
              <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
                <SheetHeader className="mb-6 text-left">
-                  <SheetTitle>Navigation</SheetTitle>
+                  {/* Use SheetTitle for accessibility */}
+                  <SheetTitle className="text-lg font-semibold">Navigation</SheetTitle>
                   <SheetDescription>
                      Links to different sections of the portfolio.
                   </SheetDescription>
                </SheetHeader>
-               <div className="flex flex-col items-center gap-4">
+               <div className="flex flex-col items-stretch gap-4"> {/* Changed items-center to items-stretch */}
                  <NavContent isMobile={true} />
                </div>
              </SheetContent>

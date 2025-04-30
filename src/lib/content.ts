@@ -94,6 +94,7 @@ export const enContent: ContentStructure = {
         title: "Project Beta",
         description: "Details about Project Beta, focusing on the problem it solves and the development process.",
         imageUrl: "https://picsum.photos/400/250?random=2",
+        liveUrl: "#",
         repoUrl: "#",
       },
       {
