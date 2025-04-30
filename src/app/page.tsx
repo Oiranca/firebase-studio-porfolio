@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <HeroSection />
       <AboutSection />
-      <SkillsSection /> {/* Add this line */}
+      <SkillsSection /> {/* Updated Skills Section */}
       <ProjectsSection />
       <CollaborationsSection />
       <TechnologiesSection />
@@ -18,29 +18,41 @@ export default function Home() {
   );
 }
 
-// Add SkillsSection component (can be similar to Technologies or About)
+// Updated SkillsSection component with Frontend/Backend categories
 function SkillsSection() {
-  // Define your skills here
-  const technicalSkills = ["JavaScript (ES6+)", "React", "Next.js", "Node.js", "Express", "SQL (PostgreSQL)", "NoSQL (MongoDB)", "HTML5", "CSS3/Sass", "Tailwind CSS", "Docker", "Git/GitHub"];
-  // Removed designSkills array
+  // Define frontend and backend skills
+  const frontendSkills = ["JavaScript (ES6+)", "React", "Next.js", "HTML5", "CSS3/Sass", "Tailwind CSS"];
+  const backendSkills = ["Node.js", "Express", "SQL (PostgreSQL)", "NoSQL (MongoDB)", "Docker", "Git/GitHub"];
 
   return (
     <section id="skills" className="py-16 bg-secondary">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12">Skills</h2>
-        {/* Updated grid layout to center the single card */}
-        <div className="grid grid-cols-1 md:max-w-xl mx-auto">
+        {/* Grid layout for Frontend and Backend cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {/* Frontend Skills Card */}
           <div className="bg-background p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 text-center text-primary">Technical Skills</h3>
+            <h3 className="text-xl font-semibold mb-4 text-center text-primary">Frontend</h3>
             <ul className="flex flex-wrap gap-2 justify-center">
-              {technicalSkills.map((skill) => (
+              {frontendSkills.map((skill) => (
                 <li key={skill} className="bg-accent text-accent-foreground text-sm font-medium px-3 py-1 rounded-full shadow">
                   {skill}
                 </li>
               ))}
             </ul>
           </div>
-          {/* Removed the Design & Tools card */}
+
+          {/* Backend Skills Card */}
+          <div className="bg-background p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 text-center text-primary">Backend</h3>
+            <ul className="flex flex-wrap gap-2 justify-center">
+              {backendSkills.map((skill) => (
+                <li key={skill} className="bg-accent text-accent-foreground text-sm font-medium px-3 py-1 rounded-full shadow">
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
