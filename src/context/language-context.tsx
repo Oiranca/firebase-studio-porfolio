@@ -3,7 +3,8 @@
 
 import * as React from 'react';
 import { enContent, type ContentStructure } from '@/lib/content';
-import { translateContent, type TranslateContentOutput } from '@/ai/flows/translate-content-flow';
+import { translateContent, type TranslatableContentOutput } from '@/ai/flows/translate-content-flow';
+import { produce } from 'immer'; // Using Immer for easier immutable updates
 
 type Language = 'en' | 'es';
 
@@ -16,10 +17,87 @@ interface LanguageContextType {
 
 const LanguageContext = React.createContext<LanguageContextType | undefined>(undefined);
 
+// Helper function to merge translated text back into the full structure
+function mergeTranslatedText(
+    originalContent: ContentStructure,
+    translatedText: TranslatableContentOutput
+): ContentStructure {
+    // Use Immer for safe and easy immutable updates
+    return produce(originalContent, draft => {
+        // Nav Links
+        translatedText.navLinks.forEach((link, index) => {
+            if (draft.navLinks[index]) {
+                draft.navLinks[index].name = link.name;
+            }
+        });
+
+        // Hero
+        draft.hero.name = translatedText.hero.name;
+        draft.hero.description = translatedText.hero.description;
+
+        // About
+        draft.about.title = translatedText.about.title;
+        draft.about.introductionTitle = translatedText.about.introductionTitle;
+        draft.about.introduction = translatedText.about.introduction;
+        draft.about.softSkillsTitle = translatedText.about.softSkillsTitle;
+        draft.about.softSkills = translatedText.about.softSkills;
+
+        // Skills
+        draft.skills.title = translatedText.skills.title;
+        draft.skills.frontendTitle = translatedText.skills.frontendTitle;
+        draft.skills.frontendSkills = translatedText.skills.frontendSkills;
+        draft.skills.backendTitle = translatedText.skills.backendTitle;
+        draft.skills.backendSkills = translatedText.skills.backendSkills;
+
+
+        // Projects
+        draft.projects.title = translatedText.projects.title;
+        translatedText.projects.items.forEach((item, index) => {
+            if (draft.projects.items[index]) {
+                draft.projects.items[index].title = item.title;
+                draft.projects.items[index].description = item.description;
+            }
+        });
+
+        // Collaborations
+        draft.collaborations.title = translatedText.collaborations.title;
+        translatedText.collaborations.items.forEach((item, index) => {
+            if (draft.collaborations.items[index]) {
+                draft.collaborations.items[index].title = item.title;
+                draft.collaborations.items[index].description = item.description;
+                draft.collaborations.items[index].team = item.team;
+            }
+        });
+
+        // Technologies
+        draft.technologies.title = translatedText.technologies.title;
+        translatedText.technologies.items.forEach((item, index) => {
+            if (draft.technologies.items[index]) {
+                draft.technologies.items[index].name = item.name;
+                // Icons are preserved from the original draft
+            }
+        });
+
+        // Footer
+        draft.footer.copyright = translatedText.footer.copyright;
+        translatedText.footer.socialLinks.forEach((link, index) => {
+             if (draft.footer.socialLinks[index]) {
+                draft.footer.socialLinks[index].name = link.name;
+                 // Icons/hrefs are preserved
+             }
+        });
+
+        // Translation Button
+        draft.translationButton = translatedText.translationButton;
+    });
+}
+
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = React.useState<Language>('en');
   const [content, setContent] = React.useState<ContentStructure>(enContent);
-  const [translatedContent, setTranslatedContent] = React.useState<TranslateContentOutput | null>(null);
+  // Cache the *fully merged* Spanish content structure
+  const [mergedSpanishContent, setMergedSpanishContent] = React.useState<ContentStructure | null>(null);
   const [isLoadingTranslation, setIsLoadingTranslation] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -31,24 +109,32 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       setContent(enContent);
       setError(null); // Clear error when switching back to English
     } else {
-      // If Spanish content already translated and cached, use it
-      if (translatedContent) {
+      // If fully merged Spanish content already cached, use it
+      if (mergedSpanishContent) {
         setLanguage('es');
-        setContent(translatedContent);
+        setContent(mergedSpanishContent);
         setError(null);
       } else {
         setIsLoadingTranslation(true);
         setError(null); // Clear previous errors
         console.log("Requesting translation to Spanish...");
         try {
-          const spanishContent = await translateContent(enContent);
-          console.log("Translation successful:", spanishContent);
-          setTranslatedContent(spanishContent); // Cache the translation
-          setContent(spanishContent);
+          // Call the flow - it now expects the full structure but returns only translated text
+          const translatedTextData: TranslatableContentOutput = await translateContent(enContent);
+
+          console.log("Translation successful (text only):", translatedTextData);
+
+          // Merge the translated text back into the original structure
+          const fullSpanishContent = mergeTranslatedText(enContent, translatedTextData);
+          console.log("Merged full Spanish content:", fullSpanishContent);
+
+          setMergedSpanishContent(fullSpanishContent); // Cache the fully merged structure
+          setContent(fullSpanishContent); // Set the active content
           setLanguage('es');
+
         } catch (err) {
            console.error("Translation error:", err);
-           setError("Failed to translate content. Please try again.");
+           setError(err instanceof Error ? err.message : "Failed to translate content. Please try again.");
            // Optionally revert to English or show an error message
            // setLanguage('en');
            // setContent(enContent);
@@ -65,7 +151,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       // Replace with your preferred way to show errors, e.g., a toast notification
        alert(`Translation Error: ${error}`); // Simple alert for now
        // Example using useToast hook (if available globally or passed down)
+       // import { useToast } from '@/hooks/use-toast';
+       // const { toast } = useToast();
        // toast({ title: "Translation Error", description: error, variant: "destructive" });
+       setError(null); // Clear error after showing
     }
   }, [error]);
 
