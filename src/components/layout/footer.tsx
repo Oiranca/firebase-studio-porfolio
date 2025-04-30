@@ -14,19 +14,19 @@ export function Footer() {
 
 
   return (
-    <footer className="bg-secondary text-secondary-foreground py-6 mt-auto relative"> {/* Changed mt-16 to mt-auto */}
+    <footer className="bg-secondary text-secondary-foreground py-6 mt-auto relative"> {/* Changed mt-auto */}
       <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full">
         <p className="text-sm mb-4 text-center">{copyrightText}</p> {/* Use dynamic copyright */}
 
         {/* Sticky Social Icons for Desktop (Positioned independently) */}
-        <div className="hidden md:flex fixed bottom-4 left-4 flex-col gap-3 z-40">
+        <div className="hidden md:flex fixed bottom-4 left-4 flex-col gap-3 z-40 items-center justify-center"> {/* Added items-center and justify-center */}
            {content.footer.socialLinks.map((link) => ( // Use dynamic social links
             <Link
               key={link.name}
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 bg-background rounded-full shadow-md hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
+              className="p-2 bg-primary text-primary-foreground rounded-full shadow-md hover:bg-accent hover:text-accent-foreground transition-colors duration-200" // Changed bg-background to bg-primary and added text-primary-foreground
               aria-label={link.name}
             >
               <link.icon className="h-5 w-5" />
@@ -46,3 +46,4 @@ export function Footer() {
     </footer>
   );
 }
+
