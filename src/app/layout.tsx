@@ -1,12 +1,12 @@
 
 import type { Metadata } from 'next';
-import { GeistSans } from 'geist/font/sans'; // Correct import for Geist Sans
-// Removed GeistMono import as it's not installed and not currently used
+import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
-import { Toaster } from "@/components/ui/toaster"; // Import Toaster
+import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
+import { LanguageProvider } from '@/context/language-context'; // Import LanguageProvider
 
 export const metadata: Metadata = {
   title: 'PersonaFlow - Your Portfolio',
@@ -22,17 +22,18 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased',
+          'min-h-screen bg-background font-sans antialiased flex flex-col', // Added flex flex-col
           GeistSans.variable
-          // Removed GeistMono.variable as the font is not imported
         )}
       >
-        <Navbar />
-        <main className="flex-grow">
-           {children}
-        </main>
-        <Footer />
-        <Toaster /> {/* Add Toaster here */}
+        <LanguageProvider> {/* Wrap components with LanguageProvider */}
+          <Navbar />
+          <main className="flex-grow pt-16"> {/* Add padding-top to avoid content overlap */}
+            {children}
+          </main>
+          <Footer />
+          <Toaster />
+        </LanguageProvider>
       </body>
     </html>
   );

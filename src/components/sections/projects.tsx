@@ -1,10 +1,14 @@
 
+"use client"; // Add use client directive
+
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink } from 'lucide-react';
+import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
-interface Project {
+// Define Project interface (can be moved to a types file)
+export interface Project {
   id: number;
   title: string;
   description: string;
@@ -13,51 +17,29 @@ interface Project {
   repoUrl?: string;
 }
 
-const sampleProjects: Project[] = [
-  {
-    id: 1,
-    title: "Project Alpha",
-    description: "A description of Project Alpha, highlighting its key features and the technologies used.",
-    imageUrl: "https://picsum.photos/400/250?random=1",
-    liveUrl: "#",
-    repoUrl: "#",
-  },
-  {
-    id: 2,
-    title: "Project Beta",
-    description: "Details about Project Beta, focusing on the problem it solves and the development process.",
-    imageUrl: "https://picsum.photos/400/250?random=2",
-    repoUrl: "#",
-  },
-    {
-    id: 3,
-    title: "Project Gamma",
-    description: "An overview of Project Gamma, explaining its purpose and technical implementation.",
-    imageUrl: "https://picsum.photos/400/250?random=3",
-    liveUrl: "#",
-  },
-];
 
 export function ProjectsSection() {
+  const { content } = useLanguage(); // Use language context
+
   return (
     <section id="projects" className="py-16 bg-background">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Personal Projects</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">{content.projects.title}</h2> {/* Dynamic title */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sampleProjects.map((project) => (
+          {content.projects.items.map((project) => ( // Use dynamic project items
             <Card key={project.id} className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-              <CardHeader className="p-0">
+              <CardHeader className="p-0 relative aspect-video"> {/* Added aspect ratio and relative positioning */}
                  <Image
                   src={project.imageUrl}
                   alt={`${project.title} screenshot`}
-                  width={400}
-                  height={250}
-                  className="w-full h-48 object-cover"
+                  fill // Use fill to cover the container
+                  className="object-cover" // Ensure image covers the area
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes for optimization
                 />
               </CardHeader>
               <CardContent className="p-6 flex-grow">
-                <CardTitle className="text-xl font-semibold mb-2">{project.title}</CardTitle>
-                <CardDescription>{project.description}</CardDescription>
+                <CardTitle className="text-xl font-semibold mb-2">{project.title}</CardTitle> {/* Dynamic project title */}
+                <CardDescription>{project.description}</CardDescription> {/* Dynamic project description */}
               </CardContent>
               <CardFooter className="p-6 pt-0 flex gap-4">
                  {project.liveUrl && (
