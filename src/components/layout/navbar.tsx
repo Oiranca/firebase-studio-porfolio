@@ -3,11 +3,12 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Github, Linkedin, Twitter, Menu } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useScrollDirection } from '@/hooks/use-scroll-direction';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet'; // Added SheetDescription for accessibility
+// Removed DialogTitle from this import as it doesn't exist in sheet.tsx
+import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -15,12 +16,6 @@ const navLinks = [
   { name: "Projects", href: "#projects" },
   { name: "Collaborations", href: "#collaborations" },
   { name: "Technologies", href: "#technologies" },
-];
-
-const socialLinks = [
-  { name: "GitHub", href: "#", icon: Github },
-  { name: "LinkedIn", href: "#", icon: Linkedin },
-  { name: "Twitter", href: "#", icon: Twitter },
 ];
 
 export function Navbar() {
@@ -42,35 +37,27 @@ export function Navbar() {
       {navLinks.map((link) => {
         const LinkComponent = (
           <Link
-            // Key should be on the outer element if conditional, so moved it outside
             href={link.href}
             className={cn(
               "text-sm font-medium text-foreground hover:text-accent transition-colors",
-              isMobile && "block py-2 text-lg w-full text-center"
+              isMobile && "block py-2 text-lg w-full text-center" // Center text for mobile links
             )}
           >
-            {link.name}
+             {link.name}
           </Link>
         );
 
         // Only wrap with SheetClose if it's mobile
         return isMobile ? (
           <SheetClose key={link.name} asChild>
-            {/* Pass the Link component as the child */}
-            {React.cloneElement(LinkComponent, { key: undefined })}
+             {/* Pass the Link component as the child */}
+             {React.cloneElement(LinkComponent, { key: undefined })}
           </SheetClose>
         ) : (
           // Render the Link directly for desktop, adding the key here
           React.cloneElement(LinkComponent, { key: link.name })
         );
       })}
-      <div className={cn("flex items-center gap-4", isMobile && "mt-4 justify-center")}>
-        {socialLinks.map((link) => (
-          <Link key={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
-            <link.icon className="h-5 w-5 text-foreground hover:text-accent transition-colors" aria-label={link.name} />
-          </Link>
-        ))}
-      </div>
     </>
   );
 
@@ -94,19 +81,19 @@ export function Navbar() {
 
         {/* Mobile Navigation */}
         <div className="md:hidden">
-          <Sheet>
+           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            {/* SheetContent provides the context for SheetClose */}
-            <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
-               {/* Add SheetHeader and SheetTitle/Description for accessibility */}
+             {/* SheetContent provides the context for SheetClose */}
+             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
+               {/* Use SheetTitle instead of DialogTitle, and make it sr-only */}
+               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                <SheetHeader className="mb-6 text-left">
-                 <SheetTitle>Navigation Menu</SheetTitle>
-                 <SheetDescription className="sr-only">
+                 <SheetDescription>
                     Links to different sections of the portfolio.
                  </SheetDescription>
                </SheetHeader>
@@ -115,7 +102,7 @@ export function Navbar() {
                  <NavContent isMobile={true} />
                </div>
             </SheetContent>
-          </Sheet>
+           </Sheet>
         </div>
       </div>
     </nav>
