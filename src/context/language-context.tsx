@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { enContent, type ContentStructure } from '@/lib/content';
-import { translateContent, type TranslatableContentOutput } from '@/ai/flows/translate-content-flow';
+import { translateContent, type TranslatableContentInput, type TranslatableContentOutput } from '@/ai/flows/translate-content-flow';
 import { produce } from 'immer'; // Using Immer for easier immutable updates
 
 type Language = 'en' | 'es';
@@ -16,6 +16,57 @@ interface LanguageContextType {
 }
 
 const LanguageContext = React.createContext<LanguageContextType | undefined>(undefined);
+
+
+// --- Helper Function to Extract Translatable Data ---
+// This function takes the full ContentStructure and returns an object
+// matching the TranslatableContentSchema.
+// THIS NOW RUNS ON THE CLIENT BEFORE CALLING THE SERVER ACTION.
+function extractTranslatableData(fullContent: ContentStructure): TranslatableContentInput {
+    return {
+        navLinks: fullContent.navLinks.map(link => ({ name: link.name })),
+        hero: { name: fullContent.hero.name, description: fullContent.hero.description },
+        about: {
+            title: fullContent.about.title,
+            introductionTitle: fullContent.about.introductionTitle,
+            introduction: fullContent.about.introduction,
+            softSkillsTitle: fullContent.about.softSkillsTitle,
+            softSkills: fullContent.about.softSkills,
+        },
+        skills: {
+             title: fullContent.skills.title,
+             frontendTitle: fullContent.skills.frontendTitle,
+             frontendSkills: fullContent.skills.frontendSkills,
+             backendTitle: fullContent.skills.backendTitle,
+             backendSkills: fullContent.skills.backendSkills,
+        },
+        projects: {
+            title: fullContent.projects.title,
+            items: fullContent.projects.items.map(item => ({
+                title: item.title,
+                description: item.description,
+            })),
+        },
+        collaborations: {
+            title: fullContent.collaborations.title,
+            items: fullContent.collaborations.items.map(item => ({
+                title: item.title,
+                description: item.description,
+                team: item.team,
+            })),
+        },
+        technologies: {
+            title: fullContent.technologies.title,
+            items: fullContent.technologies.items.map(item => ({ name: item.name })),
+        },
+        footer: {
+            copyright: fullContent.footer.copyright,
+            socialLinks: fullContent.footer.socialLinks.map(link => ({ name: link.name })),
+        },
+        translationButton: { ...fullContent.translationButton }
+    };
+}
+
 
 // Helper function to merge translated text back into the full structure
 function mergeTranslatedText(
@@ -119,14 +170,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         setError(null); // Clear previous errors
         console.log("Requesting translation to Spanish...");
         try {
-          // Call the flow - it now expects the full structure but returns only translated text
-          const translatedTextData: TranslatableContentOutput = await translateContent(enContent);
+          // 1. Extract only translatable data on the client
+          const translatableData = extractTranslatableData(enContent);
+          console.log("Extracted translatable data on client:", JSON.stringify(translatableData, null, 2));
+
+          // 2. Call the server action with ONLY the translatable data
+          const translatedTextData: TranslatableContentOutput = await translateContent(translatableData);
 
           console.log("Translation successful (text only):", translatedTextData);
 
-          // Merge the translated text back into the original structure
+          // 3. Merge the translated text back into the original structure on the client
           const fullSpanishContent = mergeTranslatedText(enContent, translatedTextData);
-          console.log("Merged full Spanish content:", fullSpanishContent);
+          console.log("Merged full Spanish content on client:", fullSpanishContent);
 
           setMergedSpanishContent(fullSpanishContent); // Cache the fully merged structure
           setContent(fullSpanishContent); // Set the active content

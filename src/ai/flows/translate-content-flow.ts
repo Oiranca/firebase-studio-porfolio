@@ -3,8 +3,8 @@
 /**
  * @fileOverview Translates the textual content of the website's structure into a target language.
  *
- * - translateContent - A function that takes the full content structure, extracts translatable text,
- *                      gets it translated by the AI flow, and returns the translated text structure.
+ * - translateContent - A server action that takes only the translatable text parts,
+ *                      gets them translated by the AI flow, and returns the translated text structure.
  * - ContentStructure (imported type) - Represents the full website content including non-translatable parts.
  * - TranslatableContentInput - The type containing only the text fields to be sent for translation.
  * - TranslatableContentOutput - The type containing only the translated text fields returned by the flow.
@@ -12,8 +12,8 @@
 
 import { ai } from '@/ai/ai-instance';
 import { z } from 'genkit';
-import type { ContentStructure } from '@/lib/content'; // Import the type, not the value
-import { enContent } from '@/lib/content'; // Import the actual content for structure reference
+import type { ContentStructure } from '@/lib/content'; // Import the type for reference if needed elsewhere
+import { enContent } from '@/lib/content'; // Import the actual content for structure reference ONLY for non-flow logic like manual corrections
 
 
 // --- Define Schemas for NESTED TRANSLATABLE objects ---
@@ -36,20 +36,12 @@ const TranslatableSkillsSchema = z.object({
     backendSkills: z.array(z.string()),
 });
 const TranslatableProjectSchema = z.object({
-    // id: z.number(), // Non-translatable
     title: z.string(),
     description: z.string(),
-    // imageUrl: z.string().url(), // Non-translatable
-    // liveUrl: z.string().url().optional(), // Non-translatable
-    // repoUrl: z.string().url().optional(), // Non-translatable
 });
 const TranslatableCollaborationSchema = z.object({
-    // id: z.number(), // Non-translatable
     title: z.string(),
     description: z.string(),
-    // imageUrl: z.string().url(), // Non-translatable
-    // liveUrl: z.string().url().optional(), // Non-translatable
-    // repoUrl: z.string().url().optional(), // Non-translatable
     team: z.array(z.string()).optional().describe("Translate only if not proper nouns"),
 });
 
@@ -58,7 +50,6 @@ const TranslatableTechnologySchema = z.object({ name: z.string() });
 
 const TranslatableFooterSchema = z.object({
     copyright: z.string().describe("Translate, keeping {year} placeholder"),
-    // Social links names might be brands, often not translated
     socialLinks: z.array(z.object({ name: z.string().describe("Translate only if not a brand name") })),
 });
 
@@ -98,65 +89,14 @@ export type TranslatableContentInput = z.infer<typeof TranslatableContentSchema>
 export type TranslatableContentOutput = z.infer<typeof TranslatableContentSchema>; // Output is the same structure, just translated
 
 
-// --- Helper Function to Extract Translatable Data ---
-// This function takes the full ContentStructure and returns an object
-// matching the TranslatableContentSchema.
-function extractTranslatableData(fullContent: ContentStructure): TranslatableContentInput {
-    return {
-        navLinks: fullContent.navLinks.map(link => ({ name: link.name })),
-        hero: { name: fullContent.hero.name, description: fullContent.hero.description },
-        about: {
-            title: fullContent.about.title,
-            introductionTitle: fullContent.about.introductionTitle,
-            introduction: fullContent.about.introduction,
-            softSkillsTitle: fullContent.about.softSkillsTitle,
-            softSkills: fullContent.about.softSkills,
-        },
-        skills: {
-             title: fullContent.skills.title,
-             frontendTitle: fullContent.skills.frontendTitle,
-             frontendSkills: fullContent.skills.frontendSkills,
-             backendTitle: fullContent.skills.backendTitle,
-             backendSkills: fullContent.skills.backendSkills,
-        },
-        projects: {
-            title: fullContent.projects.title,
-            items: fullContent.projects.items.map(item => ({
-                title: item.title,
-                description: item.description,
-            })),
-        },
-        collaborations: {
-            title: fullContent.collaborations.title,
-            items: fullContent.collaborations.items.map(item => ({
-                title: item.title,
-                description: item.description,
-                team: item.team,
-            })),
-        },
-        technologies: {
-            title: fullContent.technologies.title,
-            items: fullContent.technologies.items.map(item => ({ name: item.name })),
-        },
-        footer: {
-            copyright: fullContent.footer.copyright,
-            socialLinks: fullContent.footer.socialLinks.map(link => ({ name: link.name })),
-        },
-        translationButton: { ...fullContent.translationButton }
-    };
-}
-
-
-// --- EXPORTED Wrapper Function ---
-// This function is called by the client. It orchestrates the extraction,
-// translation flow call, and returns only the translated text structure.
-export async function translateContent(input: ContentStructure): Promise<TranslatableContentOutput> {
-  console.log("Original full content received by translateContent wrapper:", JSON.stringify(input, null, 2));
-  const translatableData = extractTranslatableData(input);
-  console.log("Extracted translatable data:", JSON.stringify(translatableData, null, 2));
+// --- EXPORTED Server Action ---
+// This function is called by the client *with only the translatable data*.
+// It orchestrates the translation flow call and returns the translated text structure.
+export async function translateContent(input: TranslatableContentInput): Promise<TranslatableContentOutput> {
+  console.log("Translatable content received by translateContent server action:", JSON.stringify(input, null, 2));
 
   // The Genkit flow handles the schema validation internally based on inputSchema/outputSchema
-  const translatedTextData = await translateContentFlow(translatableData);
+  const translatedTextData = await translateContentFlow(input);
 
   console.log("Translated text data received:", JSON.stringify(translatedTextData, null, 2));
   return translatedTextData;
