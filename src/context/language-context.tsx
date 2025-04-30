@@ -5,6 +5,7 @@ import * as React from 'react';
 import { enContent, type ContentStructure } from '@/lib/content';
 import { translateContent, type TranslatableContentInput, type TranslatableContentOutput } from '@/ai/flows/translate-content-flow';
 import { produce } from 'immer'; // Using Immer for easier immutable updates
+import { useToast } from '@/hooks/use-toast'; // Import useToast for better error feedback
 
 type Language = 'en' | 'es';
 
@@ -23,6 +24,7 @@ const LanguageContext = React.createContext<LanguageContextType | undefined>(und
 // matching the TranslatableContentSchema.
 // THIS NOW RUNS ON THE CLIENT BEFORE CALLING THE SERVER ACTION.
 function extractTranslatableData(fullContent: ContentStructure): TranslatableContentInput {
+    // Ensure icons are not passed; only include translatable fields
     return {
         navLinks: fullContent.navLinks.map(link => ({ name: link.name })),
         hero: { name: fullContent.hero.name, description: fullContent.hero.description },
@@ -52,15 +54,17 @@ function extractTranslatableData(fullContent: ContentStructure): TranslatableCon
             items: fullContent.collaborations.items.map(item => ({
                 title: item.title,
                 description: item.description,
-                team: item.team,
+                team: item.team, // Keep team as it might contain translatable names (or not)
             })),
         },
         technologies: {
             title: fullContent.technologies.title,
+            // Only include the name for translation, icons are handled separately
             items: fullContent.technologies.items.map(item => ({ name: item.name })),
         },
         footer: {
             copyright: fullContent.footer.copyright,
+            // Only include the name for translation, href/icons are handled separately
             socialLinks: fullContent.footer.socialLinks.map(link => ({ name: link.name })),
         },
         translationButton: { ...fullContent.translationButton }
@@ -69,58 +73,78 @@ function extractTranslatableData(fullContent: ContentStructure): TranslatableCon
 
 
 // Helper function to merge translated text back into the full structure
+// This function takes the *original* English structure and the *translated text object*
+// It returns the *full* Spanish structure, preserving non-translatable fields like IDs, URLs, and icons.
 function mergeTranslatedText(
-    originalContent: ContentStructure,
+    originalContent: ContentStructure, // Always merge onto the original English base
     translatedText: TranslatableContentOutput
 ): ContentStructure {
-    // Use Immer for safe and easy immutable updates
+    console.log("Merging translated text into original structure...");
+    // Use Immer for safe and easy immutable updates based on the original English content
     return produce(originalContent, draft => {
+        console.log("Draft before merging Nav Links:", JSON.stringify(draft.navLinks));
         // Nav Links
         translatedText.navLinks.forEach((link, index) => {
             if (draft.navLinks[index]) {
                 draft.navLinks[index].name = link.name;
             }
         });
+         console.log("Draft after merging Nav Links:", JSON.stringify(draft.navLinks));
 
         // Hero
+        console.log("Draft before merging Hero:", JSON.stringify(draft.hero));
         draft.hero.name = translatedText.hero.name;
         draft.hero.description = translatedText.hero.description;
+        // profilePictureUrl is preserved from originalContent
+        console.log("Draft after merging Hero:", JSON.stringify(draft.hero));
+
 
         // About
+        console.log("Draft before merging About:", JSON.stringify(draft.about));
         draft.about.title = translatedText.about.title;
         draft.about.introductionTitle = translatedText.about.introductionTitle;
         draft.about.introduction = translatedText.about.introduction;
         draft.about.softSkillsTitle = translatedText.about.softSkillsTitle;
         draft.about.softSkills = translatedText.about.softSkills;
+         console.log("Draft after merging About:", JSON.stringify(draft.about));
 
         // Skills
+        console.log("Draft before merging Skills:", JSON.stringify(draft.skills));
         draft.skills.title = translatedText.skills.title;
         draft.skills.frontendTitle = translatedText.skills.frontendTitle;
         draft.skills.frontendSkills = translatedText.skills.frontendSkills;
         draft.skills.backendTitle = translatedText.skills.backendTitle;
         draft.skills.backendSkills = translatedText.skills.backendSkills;
+         console.log("Draft after merging Skills:", JSON.stringify(draft.skills));
 
 
         // Projects
+         console.log("Draft before merging Projects:", JSON.stringify(draft.projects));
         draft.projects.title = translatedText.projects.title;
         translatedText.projects.items.forEach((item, index) => {
             if (draft.projects.items[index]) {
                 draft.projects.items[index].title = item.title;
                 draft.projects.items[index].description = item.description;
+                // id, imageUrl, liveUrl, repoUrl are preserved
             }
         });
+         console.log("Draft after merging Projects:", JSON.stringify(draft.projects));
 
         // Collaborations
+         console.log("Draft before merging Collaborations:", JSON.stringify(draft.collaborations));
         draft.collaborations.title = translatedText.collaborations.title;
         translatedText.collaborations.items.forEach((item, index) => {
             if (draft.collaborations.items[index]) {
                 draft.collaborations.items[index].title = item.title;
                 draft.collaborations.items[index].description = item.description;
-                draft.collaborations.items[index].team = item.team;
+                draft.collaborations.items[index].team = item.team; // Update potentially translated team names
+                // id, imageUrl, liveUrl, repoUrl are preserved
             }
         });
+         console.log("Draft after merging Collaborations:", JSON.stringify(draft.collaborations));
 
         // Technologies
+         console.log("Draft before merging Technologies:", JSON.stringify(draft.technologies));
         draft.technologies.title = translatedText.technologies.title;
         translatedText.technologies.items.forEach((item, index) => {
             if (draft.technologies.items[index]) {
@@ -128,8 +152,10 @@ function mergeTranslatedText(
                 // Icons are preserved from the original draft
             }
         });
+         console.log("Draft after merging Technologies:", JSON.stringify(draft.technologies));
 
         // Footer
+         console.log("Draft before merging Footer:", JSON.stringify(draft.footer));
         draft.footer.copyright = translatedText.footer.copyright;
         translatedText.footer.socialLinks.forEach((link, index) => {
              if (draft.footer.socialLinks[index]) {
@@ -137,9 +163,12 @@ function mergeTranslatedText(
                  // Icons/hrefs are preserved
              }
         });
+         console.log("Draft after merging Footer:", JSON.stringify(draft.footer));
 
         // Translation Button
+         console.log("Draft before merging TranslationButton:", JSON.stringify(draft.translationButton));
         draft.translationButton = translatedText.translationButton;
+         console.log("Draft after merging TranslationButton:", JSON.stringify(draft.translationButton));
     });
 }
 
@@ -151,67 +180,89 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [mergedSpanishContent, setMergedSpanishContent] = React.useState<ContentStructure | null>(null);
   const [isLoadingTranslation, setIsLoadingTranslation] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const { toast } = useToast(); // Initialize toast hook
 
   const toggleLanguage = async () => {
     const targetLanguage = language === 'en' ? 'es' : 'en';
+    console.log(`Attempting to switch language from ${language} to ${targetLanguage}`);
 
     if (targetLanguage === 'en') {
+      console.log("Switching to English content.");
       setLanguage('en');
       setContent(enContent);
       setError(null); // Clear error when switching back to English
-    } else {
+    } else { // Target language is 'es'
       // If fully merged Spanish content already cached, use it
       if (mergedSpanishContent) {
+        console.log("Using cached Spanish content.");
         setLanguage('es');
         setContent(mergedSpanishContent);
         setError(null);
       } else {
+        // Need to fetch and merge translation
         setIsLoadingTranslation(true);
         setError(null); // Clear previous errors
         console.log("Requesting translation to Spanish...");
         try {
-          // 1. Extract only translatable data on the client
+          // 1. Extract only translatable data on the client from the *base English content*
           const translatableData = extractTranslatableData(enContent);
-          console.log("Extracted translatable data on client:", JSON.stringify(translatableData, null, 2));
+          console.log("Extracted translatable data (for API):", JSON.stringify(translatableData, null, 2));
 
           // 2. Call the server action with ONLY the translatable data
           const translatedTextData: TranslatableContentOutput = await translateContent(translatableData);
 
-          console.log("Translation successful (text only):", translatedTextData);
+          // Basic check if we received *something* that looks like the expected structure
+           if (!translatedTextData || typeof translatedTextData.hero?.name !== 'string') {
+               console.error("Received invalid or empty translation data:", translatedTextData);
+               throw new Error("Received invalid translation data structure from the server.");
+           }
 
-          // 3. Merge the translated text back into the original structure on the client
+          console.log("Translation successful (raw translated text data):", JSON.stringify(translatedTextData, null, 2));
+
+          // 3. Merge the translated text back into the original English structure on the client
           const fullSpanishContent = mergeTranslatedText(enContent, translatedTextData);
-          console.log("Merged full Spanish content on client:", fullSpanishContent);
+          console.log("Merged full Spanish content structure:", JSON.stringify(fullSpanishContent, null, 2));
 
           setMergedSpanishContent(fullSpanishContent); // Cache the fully merged structure
-          setContent(fullSpanishContent); // Set the active content
-          setLanguage('es');
+          setContent(fullSpanishContent); // <<<< CRITICAL: Set the active content state
+          console.log("Successfully set Spanish content state.");
+          setLanguage('es'); // <<<< CRITICAL: Set the language state
 
         } catch (err) {
-           console.error("Translation error:", err);
-           setError(err instanceof Error ? err.message : "Failed to translate content. Please try again.");
-           // Optionally revert to English or show an error message
+           console.error("Translation error in toggleLanguage:", err);
+           const errorMessage = err instanceof Error ? err.message : "Failed to translate content. Please try again.";
+           setError(errorMessage);
+           // Don't revert language here, let the error display handle it.
            // setLanguage('en');
            // setContent(enContent);
         } finally {
+          console.log("Finished translation attempt. Setting loading to false.");
           setIsLoadingTranslation(false);
         }
       }
     }
   };
 
-  // Display error message to user (e.g., using a toast)
+  // Display error message to user using toast
   React.useEffect(() => {
     if (error) {
-      // Replace with your preferred way to show errors, e.g., a toast notification
-       alert(`Translation Error: ${error}`); // Simple alert for now
-       // Example using useToast hook (if available globally or passed down)
-       // import { useToast } from '@/hooks/use-toast';
-       // const { toast } = useToast();
-       // toast({ title: "Translation Error", description: error, variant: "destructive" });
-       setError(null); // Clear error after showing
+      console.log("Displaying translation error toast:", error);
+      toast({
+        title: "Translation Error",
+        description: error,
+        variant: "destructive",
+        duration: 5000, // Show error for 5 seconds
+      });
+       // It's important to clear the error after showing it,
+       // otherwise it might reappear on subsequent renders without a new error occurring.
+       // However, setting it immediately might cause issues if the toast relies on it.
+       // A small delay or handling it within the toast's onOpenChange might be better,
+       // but for simplicity, we clear it here. Consider potential race conditions.
+       // Using a useEffect cleanup function might be safer if the toast component unmounts.
+       const timer = setTimeout(() => setError(null), 100); // Clear error shortly after showing toast
+       return () => clearTimeout(timer); // Cleanup timeout on unmount or if error changes again
     }
-  }, [error]);
+  }, [error, toast]); // Add toast to dependency array
 
   return (
     <LanguageContext.Provider value={{ language, content, isLoadingTranslation, toggleLanguage }}>
@@ -227,3 +278,5 @@ export function useLanguage() {
   }
   return context;
 }
+
+    
