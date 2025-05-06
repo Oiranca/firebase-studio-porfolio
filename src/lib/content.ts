@@ -2,8 +2,8 @@
 import type { Technology } from '@/components/sections/technologies'; // Assuming type is exported
 import type { Project } from '@/components/sections/projects'; // Assuming type is exported
 import type { Collaboration } from '@/components/sections/collaborations'; // Assuming type is exported
-import { FaReact, FaNodeJs, FaDocker, FaGitAlt, FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'; // Import relevant icons from react-icons/fa
-import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs } from 'react-icons/si'; // Import relevant icons from react-icons/si
+import { FaReact, FaNodeJs, FaDocker, FaGitAlt, FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs } from 'react-icons/si';
 
 
 // Define the structure for all static content
@@ -64,7 +64,7 @@ export const enContent: ContentStructure = {
   hero: {
     name: "Your Name Here",
     description: "Passionate Full-Stack Developer creating innovative web solutions.",
-    profilePictureUrl: "/avatar.png", // Updated image URL
+    profilePictureUrl: "https://picsum.photos/200/200", // Use placeholder image
   },
   about: {
     title: "About Me",
@@ -163,6 +163,3 @@ export const enContent: ContentStructure = {
     loading: "Translating...",
   }
 };
-
-// Potentially define other languages here in the future
-// export const esContent: ContentStructure = { ... };

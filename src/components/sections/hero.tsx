@@ -14,11 +14,12 @@ export function HeroSection() {
         <div className="mb-8">
            <Image
             src={content.hero.profilePictureUrl} // Use dynamic image URL
-            alt="My Profile Picture"
+            alt="Avatar" // Changed from "My Profile Picture"
             width={200}
             height={200}
             className="rounded-full border-4 border-accent shadow-lg mx-auto"
             priority
+            data-ai-hint="profile avatar" // Added AI hint
           />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">{content.hero.name}</h1> {/* Use dynamic name */}
