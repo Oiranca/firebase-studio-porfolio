@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Users } from 'lucide-react';
+import { FiExternalLink, FiUsers } from 'react-icons/fi'; // Replace ExternalLink, Users
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
 // Define Collaboration interface (can be moved to a types file)
@@ -36,6 +36,7 @@ export function CollaborationsSection() {
                   fill // Use fill to cover the container
                   className="object-cover" // Ensure image covers the area
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes for optimization
+                  data-ai-hint="collaboration project"
                 />
               </CardHeader>
               <CardContent className="p-6 flex-grow">
@@ -43,7 +44,7 @@ export function CollaborationsSection() {
                 <CardDescription>{collab.description}</CardDescription> {/* Dynamic collab description */}
                 {collab.team && (
                   <div className="mt-3 text-sm text-muted-foreground flex items-center gap-2">
-                     <Users className="h-4 w-4" />
+                     <FiUsers className="h-4 w-4" />
                      {/* Use dynamic team members, join if array exists */}
                      <span>With: {Array.isArray(collab.team) ? collab.team.join(', ') : ''}</span>
                   </div>
@@ -53,14 +54,14 @@ export function CollaborationsSection() {
                 {collab.liveUrl && (
                   <Button asChild variant="outline" size="sm">
                     <a href={collab.liveUrl} target="_blank" rel="noopener noreferrer">
-                      Live Demo <ExternalLink className="ml-2 h-4 w-4" />
+                      Live Demo <FiExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 )}
                  {collab.repoUrl && (
                   <Button asChild variant="secondary" size="sm">
                     <a href={collab.repoUrl} target="_blank" rel="noopener noreferrer">
-                       View Code <ExternalLink className="ml-2 h-4 w-4" />
+                       View Code <FiExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 )}
@@ -72,3 +73,4 @@ export function CollaborationsSection() {
     </section>
   );
 }
+

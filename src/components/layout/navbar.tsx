@@ -3,7 +3,9 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Menu, Languages, Loader2 } from 'lucide-react'; // Added Languages and Loader2 icons
+import { FiMenu } from 'react-icons/fi'; // Replace Menu
+import { GrLanguage } from 'react-icons/gr'; // Replace Languages
+import { CgSpinner } from 'react-icons/cg'; // Replace Loader2
 import { cn } from '@/lib/utils';
 import { useScrollDirection } from '@/hooks/use-scroll-direction';
 import { Button } from '@/components/ui/button';
@@ -21,14 +23,6 @@ export function Navbar() {
     } else if (scrollDirection === "up") {
       setIsVisible(true);
     }
-    // Reset visibility if scroll stops (optional, depends on desired behavior)
-    // const timer = setTimeout(() => {
-    //   if (scrollDirection !== null) { // Check if scrolling has happened
-    //     // Add logic if needed when scroll stops, e.g., always show navbar
-    //   }
-    // }, 150); // Adjust timeout as needed
-    // return () => clearTimeout(timer);
-
   }, [scrollDirection]);
 
   // Separate component for navigation content to avoid repetition
@@ -50,9 +44,10 @@ export function Navbar() {
 
          return isMobile ? (
             // Wrap SheetClose around the Link for mobile to close the sheet on navigation
-            <SheetClose key={link.name} asChild>
-                {LinkComponent}
-            </SheetClose>
+             // Ensure SheetClose is only used when the Sheet is open
+             <SheetClose key={link.name} asChild>
+                 {LinkComponent}
+             </SheetClose>
          ) : (
             // Render Link directly for desktop
             React.cloneElement(LinkComponent, { key: link.name })
@@ -74,7 +69,7 @@ export function Navbar() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <div className="container mx-auto px-4 py-3 flex items-center"> {/* Removed justify-between */}
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between"> {/* Added justify-between */}
         <Link href="/" className="text-lg font-bold text-primary hover:text-accent transition-colors">
           PersonaFlow
         </Link>
@@ -85,7 +80,7 @@ export function Navbar() {
         </div>
 
         {/* Buttons on the right */}
-        <div className="hidden md:flex items-center"> {/* Wrapper for buttons */}
+        <div className="hidden md:flex items-center gap-2"> {/* Wrapper for buttons */}
           <Button
             variant="ghost"
             size="sm"
@@ -94,9 +89,9 @@ export function Navbar() {
             aria-label={isLoadingTranslation ? content.translationButton.loading : translationButtonText}
           >
             {isLoadingTranslation ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <CgSpinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <Languages className="mr-2 h-4 w-4" />
+              <GrLanguage className="mr-2 h-4 w-4" />
             )}
             {isLoadingTranslation ? content.translationButton.loading : translationButtonText}
           </Button>
@@ -113,9 +108,9 @@ export function Navbar() {
              aria-label={isLoadingTranslation ? content.translationButton.loading : translationButtonText}
            >
              {isLoadingTranslation ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <CgSpinner className="h-5 w-5 animate-spin" />
              ) : (
-                <Languages className="h-5 w-5" />
+                <GrLanguage className="h-5 w-5" />
              )}
              <span className="sr-only">{isLoadingTranslation ? content.translationButton.loading : translationButtonText}</span>
            </Button>
@@ -123,18 +118,18 @@ export function Navbar() {
            <Sheet>
              <SheetTrigger asChild>
                <Button variant="ghost" size="icon">
-                 <Menu className="h-6 w-6" />
+                 <FiMenu className="h-6 w-6" />
                  <span className="sr-only">Toggle menu</span>
                </Button>
              </SheetTrigger>
              <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
-               <SheetHeader className="mb-6 text-left">
-                  {/* Use SheetTitle for accessibility */}
-                  <SheetTitle className="text-lg font-semibold">Navigation</SheetTitle>
+                <SheetHeader className="mb-6 text-left">
+                 {/* Added SheetTitle for accessibility */}
+                  <SheetTitle>Navigation</SheetTitle>
                   <SheetDescription>
-                     Links to different sections of the portfolio.
+                    Links to different sections of the portfolio.
                   </SheetDescription>
-               </SheetHeader>
+                </SheetHeader>
                <div className="flex flex-col items-stretch gap-4"> {/* Changed items-center to items-stretch */}
                  <NavContent isMobile={true} />
                </div>
@@ -145,3 +140,4 @@ export function Navbar() {
     </nav>
   );
 }
+

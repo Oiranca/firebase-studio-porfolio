@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { FiExternalLink } from 'react-icons/fi'; // Replace ExternalLink with FiExternalLink
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
 // Define Project interface (can be moved to a types file)
@@ -35,6 +35,7 @@ export function ProjectsSection() {
                   fill // Use fill to cover the container
                   className="object-cover" // Ensure image covers the area
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Add sizes for optimization
+                   data-ai-hint="project application"
                 />
               </CardHeader>
               <CardContent className="p-6 flex-grow">
@@ -45,14 +46,14 @@ export function ProjectsSection() {
                  {project.liveUrl && (
                   <Button asChild variant="outline" size="sm">
                     <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                      Live Demo <ExternalLink className="ml-2 h-4 w-4" />
+                      Live Demo <FiExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 )}
                 {project.repoUrl && (
                   <Button asChild variant="secondary" size="sm">
                     <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
-                       View Code <ExternalLink className="ml-2 h-4 w-4" />
+                       View Code <FiExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
                 )}

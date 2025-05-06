@@ -2,7 +2,8 @@
 "use client"; // Add use client directive
 
 import * as React from 'react';
-import { Code, Database, Server, Cloud, Cog, Laptop } from 'lucide-react';
+import { FaReact, FaNodeJs, FaDocker, FaGitAlt } from 'react-icons/fa'; // Import relevant icons from react-icons/fa
+import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs } from 'react-icons/si'; // Import relevant icons from react-icons/si
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
@@ -25,7 +26,10 @@ export function TechnologiesSection() {
             <Card key={tech.name} className="text-center shadow-md hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="flex flex-col items-center justify-center p-4 pb-2">
                 {/* Render the icon component directly */}
-                <tech.icon className="h-10 w-10 mb-2 text-accent" aria-hidden="true" />
+                 {/* Use a div wrapper for consistent sizing if needed */}
+                 <div className="flex justify-center items-center h-10 w-10 mb-2">
+                    <tech.icon className="h-full w-full text-accent" aria-hidden="true" />
+                 </div>
               </CardHeader>
               <CardContent className="p-4 pt-0">
                 {/* Use CardTitle for semantic heading but style as needed */}
@@ -38,3 +42,4 @@ export function TechnologiesSection() {
     </section>
   );
 }
+

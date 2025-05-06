@@ -2,7 +2,9 @@
 import type { Technology } from '@/components/sections/technologies'; // Assuming type is exported
 import type { Project } from '@/components/sections/projects'; // Assuming type is exported
 import type { Collaboration } from '@/components/sections/collaborations'; // Assuming type is exported
-import { Github, Linkedin, Twitter, Code, Database, Server, Cloud, Cog, Laptop, Users, ExternalLink } from 'lucide-react'; // Import necessary icons
+import { FaReact, FaNodeJs, FaDocker, FaGitAlt, FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'; // Import relevant icons from react-icons/fa
+import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs } from 'react-icons/si'; // Import relevant icons from react-icons/si
+
 
 // Define the structure for all static content
 export interface ContentStructure {
@@ -62,7 +64,7 @@ export const enContent: ContentStructure = {
   hero: {
     name: "Your Name Here",
     description: "Passionate Full-Stack Developer creating innovative web solutions.",
-    profilePictureUrl: "https://picsum.photos/200/200",
+    profilePictureUrl: "/avatar.png", // Updated image URL
   },
   about: {
     title: "About Me",
@@ -137,22 +139,22 @@ export const enContent: ContentStructure = {
   technologies: {
     title: "Technologies I Use",
     items: [
-      { name: "React", icon: Laptop },
-      { name: "TypeScript", icon: Code },
-      { name: "Node.js", icon: Server },
-      { name: "Tailwind CSS", icon: Cog },
-      { name: "PostgreSQL", icon: Database },
-      { name: "Docker", icon: Cloud },
-      { name: "Next.js", icon: Laptop },
-      { name: "Git", icon: Code },
+      { name: "React", icon: FaReact },
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "Node.js", icon: FaNodeJs },
+      { name: "Tailwind CSS", icon: SiTailwindcss },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "Docker", icon: FaDocker },
+      { name: "Next.js", icon: SiNextdotjs },
+      { name: "Git", icon: FaGitAlt },
     ]
   },
   footer: {
     copyright: "© {year} PersonaFlow. All rights reserved.",
     socialLinks: [
-      { name: "GitHub", href: "#", icon: Github },
-      { name: "LinkedIn", href: "#", icon: Linkedin },
-      { name: "Twitter", href: "#", icon: Twitter },
+      { name: "GitHub", href: "#", icon: FaGithub },
+      { name: "LinkedIn", href: "#", icon: FaLinkedin },
+      { name: "Twitter", href: "#", icon: FaTwitter }, // Using FaTwitter
     ]
   },
   translationButton: {
