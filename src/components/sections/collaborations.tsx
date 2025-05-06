@@ -1,3 +1,4 @@
+
 "use client"; // Add use client directive
 
 import Image from 'next/image';
@@ -55,7 +56,8 @@ export function CollaborationsSection() {
                   <Button asChild variant="outline" size="sm"><a href={collab.liveUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2">Live Demo <FiExternalLink className="h-4 w-4" /></span></a></Button>
                 )}
                  {collab.repoUrl && (
-                  <Button asChild variant="secondary" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"><a href={collab.repoUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2"> View Code <FiExternalLink className="h-4 w-4" /></span></a></Button>
+                   // Removed opacity-0 and group-hover:opacity-100
+                  <Button asChild variant="secondary" size="sm" className="transition-opacity duration-300"><a href={collab.repoUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2"> View Code <FiExternalLink className="h-4 w-4" /></span></a></Button>
                 )}
               </CardFooter>
             </Card>
@@ -65,3 +67,4 @@ export function CollaborationsSection() {
     </section>
   );
 }
+
