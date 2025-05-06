@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { FiExternalLink, FiUsers } from 'react-icons/fi'; // Replace ExternalLink, Users
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
+import { cn } from '@/lib/utils';
 
 // Define Collaboration interface (can be moved to a types file)
 export interface Collaboration {
@@ -28,7 +29,7 @@ export function CollaborationsSection() {
         <h2 className="text-3xl font-bold text-center mb-12">{content.collaborations.title}</h2> {/* Dynamic title */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {content.collaborations.items.map((collab) => ( // Use dynamic collaboration items
-            <Card key={collab.id} className="flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+            <Card key={collab.id} className="group flex flex-col overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"> {/* Add group class */}
                <CardHeader className="p-0 relative aspect-video"> {/* Added aspect ratio and relative positioning */}
                  <Image
                   src={collab.imageUrl}
@@ -53,15 +54,19 @@ export function CollaborationsSection() {
               <CardFooter className="p-6 pt-0 flex gap-4">
                 {collab.liveUrl && (
                   <Button asChild variant="outline" size="sm">
-                    <a href={collab.liveUrl} target="_blank" rel="noopener noreferrer">
-                      Live Demo <FiExternalLink className="ml-2 h-4 w-4" />
+                    <a href={collab.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                      <span> {/* Wrap content */}
+                        Live Demo <FiExternalLink className="h-4 w-4" />
+                      </span>
                     </a>
                   </Button>
                 )}
                  {collab.repoUrl && (
-                  <Button asChild variant="secondary" size="sm">
-                    <a href={collab.repoUrl} target="_blank" rel="noopener noreferrer">
-                       View Code <FiExternalLink className="ml-2 h-4 w-4" />
+                  <Button asChild variant="secondary" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"> {/* Add hover classes */}
+                    <a href={collab.repoUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                       <span> {/* Wrap content */}
+                         View Code <FiExternalLink className="h-4 w-4" />
+                       </span>
                     </a>
                   </Button>
                 )}
@@ -73,4 +78,3 @@ export function CollaborationsSection() {
     </section>
   );
 }
-
