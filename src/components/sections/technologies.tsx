@@ -1,9 +1,7 @@
 
 "use client"; // Add use client directive
 
-import * as React from 'react';
-import { FaReact, FaNodeJs, FaDocker, FaGitAlt } from 'react-icons/fa'; // Import relevant icons from react-icons/fa
-import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs } from 'react-icons/si'; // Import relevant icons from react-icons/si
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
