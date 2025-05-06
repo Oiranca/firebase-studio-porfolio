@@ -50,9 +50,9 @@ export function Navbar() {
         );
 
         return isMobile ? (
-          // Ensure SheetClose is only used when the Sheet is open
+          // Wrap LinkComponent with SheetClose when rendering for mobile
           <SheetClose key={link.name} asChild>
-            {LinkComponent}
+             {LinkComponent}
           </SheetClose>
         ) : (
           // Render Link directly for desktop
@@ -61,6 +61,7 @@ export function Navbar() {
       })}
     </>
   );
+
 
   const translationButtonText = language === 'en'
     ? content.translationButton.toSpanish
@@ -173,12 +174,13 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
-              <SheetHeader className="mb-6 text-left">
-                <SheetTitle>Navigation</SheetTitle>
-                <SheetDescription>
-                  Links to different sections of the portfolio.
-                </SheetDescription>
-              </SheetHeader>
+               <SheetHeader className="mb-6 text-left">
+                 {/* Add SheetTitle and SheetDescription for accessibility */}
+                 <SheetTitle>Navigation</SheetTitle>
+                 <SheetDescription>
+                   Links to different sections of the portfolio.
+                 </SheetDescription>
+               </SheetHeader>
               <div className="flex flex-col items-stretch gap-4">
                 <NavContent isMobile={true} />
               </div>
