@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { FiMenu, FiMoon, FiSun } from 'react-icons/fi'; // Added FiMoon, FiSun
+import { FiMenu, FiMoon, FiSun } from 'react-icons/fi'; // Keep FiMoon, FiSun
 import { GrLanguage } from 'react-icons/gr';
 import { CgSpinner } from 'react-icons/cg';
 import { cn } from '@/lib/utils';
@@ -12,18 +12,14 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useLanguage } from '@/context/language-context';
 import { useTheme } from "next-themes"; // Import useTheme
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"; // Import DropdownMenu components
+
+// Removed unused DropdownMenu imports
 
 export function Navbar() {
   const scrollDirection = useScrollDirection();
   const [isVisible, setIsVisible] = React.useState(true);
   const { language, content, isLoadingTranslation, toggleLanguage } = useLanguage();
-  const { setTheme } = useTheme(); // Use theme hook
+  const { theme, setTheme } = useTheme(); // Use theme hook
 
   React.useEffect(() => {
     if (scrollDirection === "down") {
@@ -67,6 +63,10 @@ export function Navbar() {
     ? content.translationButton.toSpanish
     : content.translationButton.toEnglish;
 
+  const handleThemeToggle = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <nav
       className={cn(
@@ -102,27 +102,12 @@ export function Navbar() {
             {isLoadingTranslation ? content.translationButton.loading : translationButtonText}
           </Button>
 
-          {/* Theme Toggle */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Theme Toggle Button */}
+          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+             <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+             <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+             <span className="sr-only">Toggle theme</span>
+          </Button>
         </div>
 
         {/* Mobile Controls */}
@@ -144,26 +129,11 @@ export function Navbar() {
           </Button>
 
           {/* Theme Toggle - Mobile */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+             <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+             <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+             <span className="sr-only">Toggle theme</span>
+          </Button>
 
           {/* Mobile Menu Trigger */}
           <Sheet>
@@ -175,7 +145,6 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
                <SheetHeader className="mb-6 text-left">
-                 {/* Add SheetTitle and SheetDescription for accessibility */}
                  <SheetTitle>Navigation</SheetTitle>
                  <SheetDescription>
                    Links to different sections of the portfolio.

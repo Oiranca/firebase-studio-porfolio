@@ -30,8 +30,8 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light" // Set default theme to light
+          enableSystem // Keep system preference enabled for initial load or if desired later
           disableTransitionOnChange
         >
           <LanguageProvider>
