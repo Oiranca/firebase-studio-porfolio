@@ -1,4 +1,3 @@
-
 "use client"; // Add use client directive
 
 import Image from 'next/image';
@@ -53,22 +52,10 @@ export function CollaborationsSection() {
               </CardContent>
               <CardFooter className="p-6 pt-0 flex gap-4">
                 {collab.liveUrl && (
-                  <Button asChild variant="outline" size="sm">
-                    <a href={collab.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                      <span> {/* Wrap content */}
-                        Live Demo <FiExternalLink className="h-4 w-4" />
-                      </span>
-                    </a>
-                  </Button>
+                  <Button asChild variant="outline" size="sm"><a href={collab.liveUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2">Live Demo <FiExternalLink className="h-4 w-4" /></span></a></Button>
                 )}
                  {collab.repoUrl && (
-                  <Button asChild variant="secondary" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"> {/* Add hover classes */}
-                    <a href={collab.repoUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                       <span> {/* Wrap content */}
-                         View Code <FiExternalLink className="h-4 w-4" />
-                       </span>
-                    </a>
-                  </Button>
+                  <Button asChild variant="secondary" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"><a href={collab.repoUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2"> View Code <FiExternalLink className="h-4 w-4" /></span></a></Button>
                 )}
               </CardFooter>
             </Card>
