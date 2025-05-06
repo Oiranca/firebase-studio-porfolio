@@ -12,14 +12,18 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useLanguage } from '@/context/language-context';
 import { useTheme } from "next-themes"; // Import useTheme
-
-// Removed unused DropdownMenu imports
+import { useEffect, useState } from 'react';
 
 export function Navbar() {
   const scrollDirection = useScrollDirection();
   const [isVisible, setIsVisible] = React.useState(true);
   const { language, content, isLoadingTranslation, toggleLanguage } = useLanguage();
   const { theme, setTheme } = useTheme(); // Use theme hook
+  const [isMounted, setIsMounted] = React.useState(false); // State for hydration fix
+
+  React.useEffect(() => {
+    setIsMounted(true); // Set mounted state after initial render
+  }, []);
 
   React.useEffect(() => {
     if (scrollDirection === "down") {
@@ -67,6 +71,12 @@ export function Navbar() {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
+  // Determine aria-label only after mount to avoid hydration mismatch
+  const themeToggleButtonAriaLabel = isMounted
+    ? `Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`
+    : "Toggle theme";
+
+
   return (
     <nav
       className={cn(
@@ -103,7 +113,7 @@ export function Navbar() {
           </Button>
 
           {/* Theme Toggle Button */}
-          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={themeToggleButtonAriaLabel}>
              <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
              <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
              <span className="sr-only">Toggle theme</span>
@@ -129,7 +139,7 @@ export function Navbar() {
           </Button>
 
           {/* Theme Toggle - Mobile */}
-          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={themeToggleButtonAriaLabel}>
              <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
              <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
              <span className="sr-only">Toggle theme</span>
