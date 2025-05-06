@@ -45,11 +45,18 @@ export function ProjectsSection() {
               </CardContent>
               <CardFooter className="p-6 pt-0 flex gap-4">
                  {project.liveUrl && (
-                  <Button asChild variant="outline" size="sm"><a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2">Live Demo <FiExternalLink className="h-4 w-4" /></span></a></Button>
+                  <Button asChild variant="outline" size="sm">
+                     <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                        <span className="flex items-center gap-2">Live Demo <FiExternalLink className="h-4 w-4" /></span>
+                     </a>
+                  </Button>
                 )}
                 {project.repoUrl && (
-                  // Removed opacity-0 and group-hover:opacity-100
-                  <Button asChild variant="secondary" size="sm" className="transition-opacity duration-300"><a href={project.repoUrl} target="_blank" rel="noopener noreferrer"><span className="flex items-center gap-2">View Code <FiExternalLink className="h-4 w-4" /></span></a></Button>
+                   <Button asChild variant="outline" size="sm">
+                     <a href={project.repoUrl} target="_blank" rel="noopener noreferrer">
+                        <span className="flex items-center gap-2">View Code <FiExternalLink className="h-4 w-4" /></span>
+                      </a>
+                   </Button>
                 )}
               </CardFooter>
             </Card>
@@ -59,4 +66,3 @@ export function ProjectsSection() {
     </section>
   );
 }
-
