@@ -2,8 +2,8 @@
 import type { Technology } from '@/components/sections/technologies'; // Assuming type is exported
 import type { Project } from '@/components/sections/projects'; // Assuming type is exported
 import type { Collaboration } from '@/components/sections/collaborations'; // Assuming type is exported
-import { FaReact, FaNodeJs, FaDocker, FaGitAlt, FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs } from 'react-icons/si';
+import { FaGithub, FaLinkedin, FaTwitter, FaReact, FaDocker, FaGitAlt } from 'react-icons/fa'; // Keep FaReact, FaDocker, FaGitAlt
+import { SiTypescript, SiTailwindcss, SiPostgresql, SiNextdotjs, SiNodedotjs } from 'react-icons/si'; // Use SiNodedotjs instead of FaNodeJs
 
 
 // Define the structure for all static content
@@ -141,7 +141,7 @@ export const enContent: ContentStructure = {
     items: [
       { name: "React", icon: FaReact },
       { name: "TypeScript", icon: SiTypescript },
-      { name: "Node.js", icon: FaNodeJs },
+      { name: "Node.js", icon: SiNodedotjs }, // Changed icon here
       { name: "Tailwind CSS", icon: SiTailwindcss },
       { name: "PostgreSQL", icon: SiPostgresql },
       { name: "Docker", icon: FaDocker },
@@ -163,3 +163,4 @@ export const enContent: ContentStructure = {
     loading: "Translating...",
   }
 };
+
