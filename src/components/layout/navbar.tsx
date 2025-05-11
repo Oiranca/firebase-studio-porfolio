@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useLanguage } from '@/context/language-context';
 import { useTheme } from "next-themes"; // Import useTheme
-import { useEffect, useState } from 'react';
+
 
 export function Navbar() {
   const scrollDirection = useScrollDirection();
@@ -84,7 +84,7 @@ export function Navbar() {
         isVisible ? "translate-y-0" : "-translate-y-full"
       )}
     >
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-3 flex items-center justify-around">
         <Link href="/" className="text-lg font-bold text-primary hover:text-accent transition-colors">
           PersonaFlow
         </Link>
