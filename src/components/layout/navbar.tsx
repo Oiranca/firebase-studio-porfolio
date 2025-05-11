@@ -1,7 +1,7 @@
 
 "use client"
 
-import * as React from 'react';
+
 import Link from 'next/link';
 import { FiMenu, FiMoon, FiSun } from 'react-icons/fi'; // Keep FiMoon, FiSun
 import { GrLanguage } from 'react-icons/gr';
@@ -12,20 +12,20 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { useLanguage } from '@/context/language-context';
 import { useTheme } from "next-themes"; // Import useTheme
-
+import {cloneElement, useEffect, useState} from 'react';
 
 export function Navbar() {
   const scrollDirection = useScrollDirection();
-  const [isVisible, setIsVisible] = React.useState(true);
+  const [isVisible, setIsVisible] = useState(true);
   const { language, content, isLoadingTranslation, toggleLanguage } = useLanguage();
   const { theme, setTheme } = useTheme(); // Use theme hook
-  const [isMounted, setIsMounted] = React.useState(false); // State for hydration fix
+  const [isMounted, setIsMounted] = useState(false); // State for hydration fix
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsMounted(true); // Set mounted state after initial render
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (scrollDirection === "down") {
       setIsVisible(false);
     } else if (scrollDirection === "up") {
@@ -56,7 +56,7 @@ export function Navbar() {
           </SheetClose>
         ) : (
           // Render Link directly for desktop
-          React.cloneElement(LinkComponent, { key: link.name })
+          cloneElement(LinkComponent, { key: link.name })
         );
       })}
     </>
