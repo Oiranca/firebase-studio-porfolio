@@ -79,47 +79,36 @@ function mergeTranslatedText(
     originalContent: ContentStructure, // Always merge onto the original English base
     translatedText: TranslatableContentOutput
 ): ContentStructure {
-    console.log("Merging translated text into original structure...");
     // Use Immer for safe and easy immutable updates based on the original English content
     return produce(originalContent, draft => {
-        console.log("Draft before merging Nav Links:", JSON.stringify(draft.navLinks));
         // Nav Links
         translatedText.navLinks.forEach((link, index) => {
             if (draft.navLinks[index]) {
                 draft.navLinks[index].name = link.name;
             }
         });
-         console.log("Draft after merging Nav Links:", JSON.stringify(draft.navLinks));
 
         // Hero
-        console.log("Draft before merging Hero:", JSON.stringify(draft.hero));
         draft.hero.name = translatedText.hero.name;
         draft.hero.description = translatedText.hero.description;
         // profilePictureUrl is preserved from originalContent
-        console.log("Draft after merging Hero:", JSON.stringify(draft.hero));
 
 
         // About
-        console.log("Draft before merging About:", JSON.stringify(draft.about));
         draft.about.title = translatedText.about.title;
         draft.about.introductionTitle = translatedText.about.introductionTitle;
         draft.about.introduction = translatedText.about.introduction;
         draft.about.softSkillsTitle = translatedText.about.softSkillsTitle;
         draft.about.softSkills = translatedText.about.softSkills;
-         console.log("Draft after merging About:", JSON.stringify(draft.about));
-
+        
         // Skills
-        console.log("Draft before merging Skills:", JSON.stringify(draft.skills));
         draft.skills.title = translatedText.skills.title;
         draft.skills.frontendTitle = translatedText.skills.frontendTitle;
         draft.skills.frontendSkills = translatedText.skills.frontendSkills;
         draft.skills.backendTitle = translatedText.skills.backendTitle;
         draft.skills.backendSkills = translatedText.skills.backendSkills;
-         console.log("Draft after merging Skills:", JSON.stringify(draft.skills));
-
-
+        
         // Projects
-         console.log("Draft before merging Projects:", JSON.stringify(draft.projects));
         draft.projects.title = translatedText.projects.title;
         translatedText.projects.items.forEach((item, index) => {
             if (draft.projects.items[index]) {
@@ -128,10 +117,8 @@ function mergeTranslatedText(
                 // id, imageUrl, liveUrl, repoUrl are preserved
             }
         });
-         console.log("Draft after merging Projects:", JSON.stringify(draft.projects));
 
         // Collaborations
-         console.log("Draft before merging Collaborations:", JSON.stringify(draft.collaborations));
         draft.collaborations.title = translatedText.collaborations.title;
         translatedText.collaborations.items.forEach((item, index) => {
             if (draft.collaborations.items[index]) {
@@ -141,10 +128,8 @@ function mergeTranslatedText(
                 // id, imageUrl, liveUrl, repoUrl are preserved
             }
         });
-         console.log("Draft after merging Collaborations:", JSON.stringify(draft.collaborations));
-
+        
         // Technologies
-         console.log("Draft before merging Technologies:", JSON.stringify(draft.technologies));
         draft.technologies.title = translatedText.technologies.title;
         translatedText.technologies.items.forEach((item, index) => {
             if (draft.technologies.items[index]) {
@@ -152,10 +137,8 @@ function mergeTranslatedText(
                 // Icons are preserved from the original draft
             }
         });
-         console.log("Draft after merging Technologies:", JSON.stringify(draft.technologies));
-
+        
         // Footer
-         console.log("Draft before merging Footer:", JSON.stringify(draft.footer));
         draft.footer.copyright = translatedText.footer.copyright;
         translatedText.footer.socialLinks.forEach((link, index) => {
              if (draft.footer.socialLinks[index]) {
@@ -163,12 +146,9 @@ function mergeTranslatedText(
                  // Icons/hrefs are preserved
              }
         });
-         console.log("Draft after merging Footer:", JSON.stringify(draft.footer));
-
+        
         // Translation Button
-         console.log("Draft before merging TranslationButton:", JSON.stringify(draft.translationButton));
         draft.translationButton = translatedText.translationButton;
-         console.log("Draft after merging TranslationButton:", JSON.stringify(draft.translationButton));
     });
 }
 

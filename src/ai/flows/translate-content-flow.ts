@@ -12,8 +12,7 @@
 
 import { ai } from '@/ai/ai-instance';
 import { z } from 'genkit';
-import type { ContentStructure } from '@/lib/content'; // Import the type for reference if needed elsewhere
-import { enContent } from '@/lib/content'; // Import the actual content for structure reference ONLY for non-flow logic like manual corrections
+
 
 
 // --- Define Schemas for NESTED TRANSLATABLE objects ---
@@ -94,21 +93,16 @@ export type TranslatableContentOutput = z.infer<typeof TranslatableContentSchema
 // This function is called by the client *with only the translatable data*.
 // It orchestrates the translation flow call and returns the translated text structure.
 export async function translateContent(input: TranslatableContentInput): Promise<TranslatableContentOutput> {
-  console.log("Translatable content received by translateContent server action:", JSON.stringify(input, null, 2));
-
   try {
     // The Genkit flow handles the schema validation internally based on inputSchema/outputSchema
     const translatedTextData = await translateContentFlow(input);
 
      if (!translatedTextData || typeof translatedTextData.hero?.name !== 'string') {
-        console.error("translateContent server action received invalid data from flow:", translatedTextData);
         throw new Error("Translation flow returned invalid data.");
      }
 
-    console.log("Translated text data returned by server action:", JSON.stringify(translatedTextData, null, 2));
     return translatedTextData;
   } catch (error) {
-    console.error("Error in translateContent server action:", error);
     // Re-throw the error so the client can catch it
     throw error;
   }
@@ -157,49 +151,37 @@ const translateContentFlow = ai.defineFlow<
     outputSchema: TranslatableContentSchema,
   },
   async (translatableContent) => {
-    console.log("Translatable content received by flow:", JSON.stringify(translatableContent, null, 2));
-
     try {
         // Stringify the input for the prompt
         const jsonInputString = JSON.stringify(translatableContent);
-        console.log("Stringified JSON being sent to prompt:", jsonInputString);
 
         // Call the prompt with the stringified input
         const { output } = await translatePrompt({ jsonInputString });
 
-        // DETAILED LOGGING: Log the raw output immediately after receiving it
-        console.log("Raw translation output received from AI model:", JSON.stringify(output, null, 2));
-
         if (!output) {
-          console.error("Translation failed: No output received from the AI model.");
           throw new Error("Translation failed: No output received from the AI model.");
         }
 
         // Basic validation (AI should adhere to output schema, but good to double-check)
         if (typeof output.hero?.name !== 'string' || !Array.isArray(output.navLinks)) {
-            console.error("Translation output structure seems invalid:", output);
             throw new Error("Translation failed: Invalid structure received from the AI model.");
         }
 
         // --- Manual Correction/Refinement (Focus on AI quirks) ---
         // Ensure copyright year placeholder is correct (AI might replace it)
-        if (output.footer && typeof output.footer.copyright === 'string' && !output.footer.copyright.includes('{year}')) {
-            console.warn("AI potentially removed {year} placeholder in copyright. Attempting basic fix.");
+        if (output.footer && !output.footer.copyright.includes('{year}')) {
             // Try a simple replacement logic. This is fragile and might need improvement.
             // Example: Replace any 4-digit number with '{year}' or append if no number found.
             output.footer.copyright = output.footer.copyright.replace(/\d{4}/, '{year}');
             if (!output.footer.copyright.includes('{year}')) {
                  // If still missing, append it (might not be grammatically perfect)
                 output.footer.copyright += ' {year}';
-                 console.warn("Appended {year} as a fallback fix.");
             }
         }
 
-        console.log("Final processed translated text data being returned by flow:", JSON.stringify(output, null, 2));
         return output; // Return only the translated text data structure
 
     } catch(error) {
-         console.error("Error during translatePrompt execution or processing:", error);
          // Rethrow the error to be caught by the calling server action
          throw error;
     }
@@ -209,4 +191,4 @@ const translateContentFlow = ai.defineFlow<
 // Note: The dev import is removed as it caused issues and is typically not needed within the flow file itself.
 // Genkit registration usually happens where flows are imported, like in `src/ai/dev.ts`.
 
-    
+
