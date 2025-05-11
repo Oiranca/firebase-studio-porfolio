@@ -59,6 +59,13 @@ const TranslatableTranslationButtonSchema = z.object({
     loading: z.string(),
 });
 
+const TranslatableThemeButtonSchema = z.object({
+    light: z.string(),
+    dark: z.string(),
+});
+
+
+
 
 // --- Define the main TRANSLATABLE Content Structure Schema ---
 // This schema only includes the parts of the content that need translation.
@@ -81,6 +88,7 @@ const TranslatableContentSchema = z.object({
   }),
   footer: TranslatableFooterSchema, // Only copyright and link names need translation
   translationButton: TranslatableTranslationButtonSchema,
+  themeButton: TranslatableThemeButtonSchema,
 }).describe("The textual content structure of the portfolio website to be translated.");
 
 

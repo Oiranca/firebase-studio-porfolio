@@ -67,7 +67,8 @@ function extractTranslatableData(fullContent: ContentStructure): TranslatableCon
             // Only include the name for translation, href/icons are handled separately
             socialLinks: fullContent.footer.socialLinks.map(link => ({ name: link.name })),
         },
-        translationButton: { ...fullContent.translationButton }
+        translationButton: { ...fullContent.translationButton },
+        themeButton: { ...fullContent.themeButton }
     };
 }
 
@@ -149,6 +150,11 @@ function mergeTranslatedText(
 
         // Translation Button
         draft.translationButton = translatedText.translationButton;
+        
+        // Theme Button
+        if (translatedText.themeButton) {
+            draft.themeButton = translatedText.themeButton;
+        }
     });
 }
 

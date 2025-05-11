@@ -85,9 +85,15 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-4 py-3 flex items-center justify-around">
-        <Link href="/" className="text-lg font-bold text-primary hover:text-accent transition-colors">
-          PersonaFlow
-        </Link>
+        {/* Theme Toggle Button */}
+        <Button variant="ghost" size="sm" onClick={handleThemeToggle} aria-label={themeToggleButtonAriaLabel}>
+           <div className="flex items-center justify-center w-5 mr-2">
+             <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+             <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+           </div>
+           <span className="dark:hidden">{content.themeButton.light}</span>
+           <span className="hidden dark:inline">{content.themeButton.dark}</span>
+        </Button>
 
         {/* Desktop Navigation - Centered */}
         <div className="hidden md:flex flex-grow justify-center items-center gap-6">
@@ -112,12 +118,7 @@ export function Navbar() {
             {isLoadingTranslation ? content.translationButton.loading : translationButtonText}
           </Button>
 
-          {/* Theme Toggle Button */}
-          <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={themeToggleButtonAriaLabel}>
-             <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-             <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-             <span className="sr-only">Toggle theme</span>
-          </Button>
+
         </div>
 
         {/* Mobile Controls */}
@@ -142,7 +143,8 @@ export function Navbar() {
           <Button variant="ghost" size="icon" onClick={handleThemeToggle} aria-label={themeToggleButtonAriaLabel}>
              <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
              <FiMoon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-             <span className="sr-only">Toggle theme</span>
+             <span className="sr-only dark:hidden">{content.themeButton.dark}</span>
+             <span className="sr-only hidden dark:inline">{content.themeButton.light}</span>
           </Button>
 
           {/* Mobile Menu Trigger */}
