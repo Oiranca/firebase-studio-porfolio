@@ -1,8 +1,8 @@
 import type {Technology} from '@/components/sections/technologies'; // Assuming type is exported
 import type {Project} from '@/components/sections/projects'; // Assuming type is exported
 import type {Collaboration} from '@/components/sections/collaborations'; // Assuming type is exported
-import {FaDocker, FaGitAlt, FaGithub, FaLinkedin, FaNode, FaReact, FaTwitter} from 'react-icons/fa'; // Keep FaReact, FaDocker, FaGitAlt
-import {SiNextdotjs, SiPostgresql, SiTailwindcss, SiTypescript} from 'react-icons/si'; // Use SiNodedotjs instead of FaNodeJs
+import {FaDocker, FaGitAlt, FaGithub, FaHtml5, FaLinkedin, FaNode, FaReact, FaTwitter} from 'react-icons/fa'; // Keep FaReact, FaDocker, FaGitAlt
+import {SiCss3, SiJavascript, SiMongodb, SiNextdotjs, SiPostgresql, SiTailwindcss, SiTypescript} from 'react-icons/si'; // Use SiNodedotjs instead of FaNodeJs
 
 
 // Define the structure for all static content
@@ -146,13 +146,15 @@ export const enContent: ContentStructure = {
     technologies: {
         title: "Technologies I Use",
         items: [
+            {name: "JavaScript", icon: SiJavascript},
+            {name: "HTML5", icon: FaHtml5},
+            {name: "CSS", icon: SiCss3},
             {name: "React", icon: FaReact},
             {name: "TypeScript", icon: SiTypescript},
-            {name: "Node.js", icon: FaNode}, // Changed icon here
+            {name: "Node.js", icon: FaNode},
             {name: "Tailwind CSS", icon: SiTailwindcss},
             {name: "PostgreSQL", icon: SiPostgresql},
-            {name: "Docker", icon: FaDocker},
-            {name: "Next.js", icon: SiNextdotjs},
+            {name: "MongoDB", icon: SiMongodb},
             {name: "Git", icon: FaGitAlt},
         ]
     },
