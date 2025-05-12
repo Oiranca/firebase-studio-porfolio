@@ -30,10 +30,10 @@ function extractTranslatableData(fullContent: ContentStructure): TranslatableCon
         hero: { name: fullContent.hero.name, description: fullContent.hero.description },
         about: {
             title: fullContent.about.title,
-            introductionTitle: fullContent.about.introductionTitle,
+            // introductionTitle: fullContent.about.introductionTitle,
             introduction: fullContent.about.introduction,
-            softSkillsTitle: fullContent.about.softSkillsTitle,
-            softSkills: fullContent.about.softSkills,
+            // softSkillsTitle: fullContent.about.softSkillsTitle,
+            // softSkills: fullContent.about.softSkills,
         },
         skills: {
              title: fullContent.skills.title,
@@ -97,10 +97,10 @@ function mergeTranslatedText(
 
         // About
         draft.about.title = translatedText.about.title;
-        draft.about.introductionTitle = translatedText.about.introductionTitle;
+        // draft.about.introductionTitle = translatedText.about.introductionTitle;
         draft.about.introduction = translatedText.about.introduction;
-        draft.about.softSkillsTitle = translatedText.about.softSkillsTitle;
-        draft.about.softSkills = translatedText.about.softSkills;
+        // draft.about.softSkillsTitle = translatedText.about.softSkillsTitle;
+        // draft.about.softSkills = translatedText.about.softSkills;
 
         // Skills
         draft.skills.title = translatedText.skills.title;

@@ -21,10 +21,9 @@ export interface ContentStructure {
     };
     about: {
         title: string;
-        introductionTitle: string;
         introduction: string;
-        softSkillsTitle: string;
-        softSkills: string[];
+        // softSkillsTitle: string;
+        // softSkills: string[];
     };
     skills: {
         title: string;
@@ -189,16 +188,15 @@ export const esContent: ContentStructure = {
         {name: "Tecnologías", href: "#technologies"},
     ],
     hero: {
-        name: "Tu Nombre Aquí",
-        description: "Desarrollador Full-Stack apasionado creando soluciones web innovadoras.",
+        name: "Samuel Romero Arbelo",
+        description: "Desarrollador web colaborativo y enfocado en el usuario.",
         profilePictureUrl: Avatar, // Use placeholder image
     },
     about: {
         title: "Sobre Mí",
-        introductionTitle: "Introducción / Extracto de Carta de Presentación",
-        introduction: "Impulsado por la pasión de crear experiencias de usuario fluidas y sistemas backend robustos, prospero en entornos colaborativos donde puedo contribuir a proyectos impactantes. Estoy ansioso por aprovechar mis habilidades en tecnologías web modernas para construir aplicaciones eficientes y escalables.",
-        softSkillsTitle: "Habilidades Blandas",
-        softSkills: ["Comunicación Efectiva", "Resolución de Problemas", "Colaboración en Equipo", "Adaptabilidad", "Gestión del Tiempo", "Creatividad"],
+        introduction: "Con más de 2 años de experiencia como desarrollador Full-Stack, me dedico a crear aplicaciones web centradas en el usuario. He trabajado en una variedad de proyectos, desde el desarrollo de funcionalidades para plataformas como AdoptaUnJunior  hasta la creación de plataformas complejas como Mymedesp o Characters Vault. Soy un apasionado de las nuevas tecnologías y disfruto mucho trabajando en equipo para desarrollar soluciones que tengan un impacto positivo.",
+        // softSkillsTitle: "Habilidades Blandas",
+        // softSkills: ["Comunicación Efectiva", "Resolución de Problemas", "Colaboración en Equipo", "Adaptabilidad", "Gestión del Tiempo", "Creatividad"],
     },
     skills: {
         title: "Habilidades Técnicas",

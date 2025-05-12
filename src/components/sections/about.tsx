@@ -16,19 +16,18 @@ export function AboutSection() {
           </CardHeader>
           <CardContent className="space-y-6 text-muted-foreground">
             <div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">{content.about.introductionTitle}</h3> {/* Dynamic intro title */}
               <p>
                 {content.about.introduction} {/* Dynamic introduction */}
               </p>
             </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">{content.about.softSkillsTitle}</h3> {/* Dynamic skills title */}
-              <ul className="list-disc list-inside space-y-1">
-                {content.about.softSkills.map((skill) => ( // Dynamic skills list
-                  <li key={skill}>{skill}</li>
-                ))}
-              </ul>
-            </div>
+          {/*  <div>*/}
+          {/*    <h3 className="text-xl font-semibold mb-2 text-foreground">{content.about.softSkillsTitle}</h3> /!* Dynamic skills title *!/*/}
+          {/*    <ul className="list-disc list-inside space-y-1">*/}
+          {/*      {content.about.softSkills.map((skill) => ( // Dynamic skills list*/}
+          {/*        <li key={skill}>{skill}</li>*/}
+          {/*      ))}*/}
+          {/*    </ul>*/}
+          {/*  </div>*/}
           </CardContent>
         </Card>
       </div>

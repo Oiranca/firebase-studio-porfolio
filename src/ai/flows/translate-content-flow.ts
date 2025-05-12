@@ -22,10 +22,10 @@ const TranslatableNavLinkSchema = z.object({ name: z.string() });
 const TranslatableHeroSchema = z.object({ name: z.string(), description: z.string() });
 const TranslatableAboutSchema = z.object({
   title: z.string(),
-  introductionTitle: z.string(),
+  // introductionTitle: z.string(),
   introduction: z.string(),
-  softSkillsTitle: z.string(),
-  softSkills: z.array(z.string()),
+  // softSkillsTitle: z.string(),
+  // softSkills: z.array(z.string()),
 });
 const TranslatableSkillsSchema = z.object({
     title: z.string(),
