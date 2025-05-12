@@ -63,9 +63,9 @@ export function Navbar() {
   );
 
 
-  const translationButtonText = language === 'en'
-    ? content.translationButton.toSpanish
-    : content.translationButton.toEnglish;
+  const translationButtonText = language === 'es'
+    ? content.translationButton.toEnglish
+    : content.translationButton.toSpanish;
 
   const handleThemeToggle = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');

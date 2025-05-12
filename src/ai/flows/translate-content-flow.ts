@@ -129,7 +129,7 @@ const translatePrompt = ai.definePrompt({
   },
   output: { schema: TranslatableContentSchema },
   // Updated prompt for better clarity and JSON handling instructions
-  prompt: `Translate the textual content of the following JSON object from English to Spanish.
+  prompt: `Translate the textual content of the following JSON object from Spanish to English.
   - Only translate the string values (e.g., "name", "description", "title", skill names, button text, copyright text).
   - Do NOT translate URLs, IDs, or technical terms commonly used in English within the Spanish tech community (e.g., 'React', 'Next.js', 'Docker', 'Git', 'JavaScript', 'CSS').
   - Do NOT translate proper nouns like collaborator names if they appear in the 'team' field, unless they have a common Spanish equivalent (unlikely).
@@ -138,12 +138,12 @@ const translatePrompt = ai.definePrompt({
   - For the copyright field ('footer.copyright'), keep the '{year}' placeholder exactly as is within the translated string.
   - Respond ONLY with the translated JSON object, ensuring it conforms to the provided output schema.
 
-  Input Content (English - Only Translatable Fields):
+  Input Content (Spanish - Only Translatable Fields):
   \`\`\`json
   {{{jsonInputString}}}
   \`\`\`
 
-  Translate the values into Spanish, maintaining the exact same JSON structure. Respond ONLY with the valid translated JSON object.`,
+  Translate the values into English, maintaining the exact same JSON structure. Respond ONLY with the valid translated JSON object.`,
 });
 
 

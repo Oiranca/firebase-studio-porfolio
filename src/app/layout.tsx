@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     // Add suppressHydrationWarning due to next-themes
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="es" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased flex flex-col',

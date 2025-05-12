@@ -58,7 +58,7 @@ export interface ContentStructure {
 
 
 // Define English content
-export const enContent: ContentStructure = {
+/*export const enContent: ContentStructure = {
     themeButton: {
         light: "Light Mode",
         dark: "Dark Mode",
@@ -172,6 +172,124 @@ export const enContent: ContentStructure = {
         toSpanish: "View in Spanish",
         toEnglish: "View in English",
         loading: "Translating...",
+    }
+};
+*/
+// Define Spanish content
+export const esContent: ContentStructure = {
+    themeButton: {
+        light: "Modo Claro",
+        dark: "Modo Oscuro",
+    },
+    navLinks: [
+        {name: "Sobre Mí", href: "#about"},
+        {name: "Habilidades", href: "#skills"},
+        {name: "Proyectos", href: "#projects"},
+        {name: "Colaboraciones", href: "#collaborations"},
+        {name: "Tecnologías", href: "#technologies"},
+    ],
+    hero: {
+        name: "Tu Nombre Aquí",
+        description: "Desarrollador Full-Stack apasionado creando soluciones web innovadoras.",
+        profilePictureUrl: Avatar, // Use placeholder image
+    },
+    about: {
+        title: "Sobre Mí",
+        introductionTitle: "Introducción / Extracto de Carta de Presentación",
+        introduction: "Impulsado por la pasión de crear experiencias de usuario fluidas y sistemas backend robustos, prospero en entornos colaborativos donde puedo contribuir a proyectos impactantes. Estoy ansioso por aprovechar mis habilidades en tecnologías web modernas para construir aplicaciones eficientes y escalables.",
+        softSkillsTitle: "Habilidades Blandas",
+        softSkills: ["Comunicación Efectiva", "Resolución de Problemas", "Colaboración en Equipo", "Adaptabilidad", "Gestión del Tiempo", "Creatividad"],
+    },
+    skills: {
+        title: "Habilidades Técnicas",
+        frontendTitle: "Frontend",
+        frontendSkills: ["JavaScript (ES6+)", "React", "Next.js", "HTML5", "CSS3/Sass", "Tailwind CSS"],
+        backendTitle: "Backend",
+        backendSkills: ["Node.js", "Express", "SQL (PostgreSQL)", "NoSQL (MongoDB)", "Docker", "Git/GitHub"],
+    },
+    projects: {
+        title: "Proyectos Personales",
+        items: [
+            {
+                id: 1,
+                title: "Proyecto Alpha",
+                description: "Una descripción del Proyecto Alpha, destacando sus características principales y las tecnologías utilizadas.",
+                imageUrl: "https://picsum.photos/400/250?random=1",
+                liveUrl: "#",
+                repoUrl: "#",
+            },
+            {
+                id: 2,
+                title: "Proyecto Beta",
+                description: "Detalles sobre el Proyecto Beta, enfocándose en el problema que resuelve y el proceso de desarrollo.",
+                imageUrl: "https://picsum.photos/400/250?random=2",
+                liveUrl: "#",
+                repoUrl: "#",
+            },
+            {
+                id: 3,
+                title: "Proyecto Gamma",
+                description: "Una visión general del Proyecto Gamma, explicando su propósito e implementación técnica.",
+                imageUrl: "https://picsum.photos/400/250?random=3",
+                liveUrl: "#",
+            },
+        ]
+    },
+    collaborations: {
+        title: "Colaboraciones",
+        items: [
+            {
+                id: 1,
+                title: "Iniciativa Colaborativa X",
+                description: "Un esfuerzo conjunto en la Iniciativa X, mostrando trabajo en equipo y objetivos compartidos.",
+                imageUrl: "https://picsum.photos/400/250?random=4",
+                liveUrl: "#",
+                team: ["Colaborador 1", "Colaborador 2"],
+            },
+            {
+                id: 2,
+                title: "Proyecto en Equipo Y",
+                description: "Desarrollado el Proyecto Y con un equipo, enfocándose en la integración y comunicación.",
+                imageUrl: "https://picsum.photos/400/250?random=5",
+                repoUrl: "#",
+                team: ["Otro Desarrollador", "Diseñador"],
+            },
+            {
+                id: 3,
+                title: "Contribución de Código Abierto Z",
+                description: "Contribución al proyecto de código abierto Z, mejorando características específicas.",
+                imageUrl: "https://picsum.photos/400/250?random=6",
+                repoUrl: "#",
+            },
+        ]
+    },
+    technologies: {
+        title: "Tecnologías que Utilizo",
+        items: [
+            {name: "JavaScript", icon: SiJavascript},
+            {name: "HTML5", icon: FaHtml5},
+            {name: "CSS", icon: SiCss3},
+            {name: "React", icon: FaReact},
+            {name: "TypeScript", icon: SiTypescript},
+            {name: "Node.js", icon: FaNode},
+            {name: "Tailwind CSS", icon: SiTailwindcss},
+            {name: "PostgreSQL", icon: SiPostgresql},
+            {name: "MongoDB", icon: SiMongodb},
+            {name: "Git", icon: FaGitAlt},
+        ]
+    },
+    footer: {
+        copyright: "© {year} PersonaFlow. Todos los derechos reservados.",
+        socialLinks: [
+            {name: "GitHub", href: "#", icon: FaGithub},
+            {name: "LinkedIn", href: "#", icon: FaLinkedin},
+            {name: "Twitter", href: "#", icon: FaTwitter},
+        ]
+    },
+    translationButton: {
+        toSpanish: "Ver en Español",
+        toEnglish: "Ver en Inglés",
+        loading: "Traduciendo...",
     }
 };
 

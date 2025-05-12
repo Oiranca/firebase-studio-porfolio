@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from 'react';
-import { enContent, type ContentStructure } from '@/lib/content';
+import { esContent, type ContentStructure } from '@/lib/content';
 import { translateContent, type TranslatableContentInput, type TranslatableContentOutput } from '@/ai/flows/translate-content-flow';
 import { produce } from 'immer'; // Using Immer for easier immutable updates
 import { useToast } from '@/hooks/use-toast'; // Import useToast for better error feedback
@@ -160,26 +160,26 @@ function mergeTranslatedText(
 
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = React.useState<Language>('en');
-  const [content, setContent] = React.useState<ContentStructure>(enContent);
+  const [language, setLanguage] = React.useState<Language>('es');
+  const [content, setContent] = React.useState<ContentStructure>(esContent);
   // Cache the *fully merged* Spanish content structure
-  const [mergedSpanishContent, setMergedSpanishContent] = React.useState<ContentStructure | null>(null);
+  const [mergedEnglishContent, setMergedEnglishContent] = React.useState<ContentStructure | null>(null);
   const [isLoadingTranslation, setIsLoadingTranslation] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const { toast } = useToast(); // Initialize toast hook
 
   const toggleLanguage = async () => {
-    const targetLanguage = language === 'en' ? 'es' : 'en';
+    const targetLanguage = language === 'es' ? 'en' : 'es';
 
-    if (targetLanguage === 'en') {
-      setLanguage('en');
-      setContent(enContent);
+    if (targetLanguage === 'es') {
+      setLanguage('es');
+      setContent(esContent);
       setError(null); // Clear error when switching back to English
     } else { // Target language is 'es'
       // If fully merged Spanish content already cached, use it
-      if (mergedSpanishContent) {
+      if (mergedEnglishContent) {
         setLanguage('es');
-        setContent(mergedSpanishContent);
+        setContent(mergedEnglishContent);
         setError(null);
       } else {
         // Need to fetch and merge translation
@@ -187,7 +187,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         setError(null); // Clear previous errors
         try {
           // 1. Extract only translatable data on the client from the *base English content*
-          const translatableData = extractTranslatableData(enContent);
+          const translatableData = extractTranslatableData(esContent);
 
           // 2. Call the server action with ONLY the translatable data
           const translatedTextData: TranslatableContentOutput = await translateContent(translatableData);
@@ -198,18 +198,18 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
            }
 
           // 3. Merge the translated text back into the original English structure on the client
-          const fullSpanishContent = mergeTranslatedText(enContent, translatedTextData);
+          const fullEnglishContent = mergeTranslatedText(esContent, translatedTextData);
 
-          setMergedSpanishContent(fullSpanishContent); // Cache the fully merged structure
-          setContent(fullSpanishContent); // <<<< CRITICAL: Set the active content state
-          setLanguage('es'); // <<<< CRITICAL: Set the language state
+          setMergedEnglishContent(fullEnglishContent); // Cache the fully merged structure
+          setContent(fullEnglishContent); // <<<< CRITICAL: Set the active content state
+          setLanguage('en'); // <<<< CRITICAL: Set the language state
 
                   } catch (err) {
            const errorMessage = err instanceof Error ? err.message : "Failed to translate content. Please try again.";
            setError(errorMessage);
            // Don't revert language here, let the error display handle it.
            // setLanguage('en');
-           // setContent(enContent);
+           // setContent(esContent);
                   } finally {
           setIsLoadingTranslation(false);
         }
