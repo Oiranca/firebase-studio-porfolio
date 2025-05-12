@@ -1,8 +1,10 @@
 import type {Technology} from '@/components/sections/technologies'; // Assuming type is exported
 import type {Project} from '@/components/sections/projects'; // Assuming type is exported
 import type {Collaboration} from '@/components/sections/collaborations'; // Assuming type is exported
-import {FaDocker, FaGitAlt, FaGithub, FaHtml5, FaLinkedin, FaNode, FaReact, FaTwitter} from 'react-icons/fa'; // Keep FaReact, FaDocker, FaGitAlt
-import {SiCss3, SiJavascript, SiMongodb, SiNextdotjs, SiPostgresql, SiTailwindcss, SiTypescript} from 'react-icons/si'; // Use SiNodedotjs instead of FaNodeJs
+import {FaGitAlt, FaGithub, FaHtml5, FaLinkedin, FaNode, FaReact, FaTwitter} from 'react-icons/fa'; // Keep FaReact, FaDocker, FaGitAlt
+import {SiCss3, SiJavascript, SiMongodb, SiPostgresql, SiTailwindcss, SiTypescript} from 'react-icons/si';
+import {StaticImageData} from "next/image"; // Use SiNodedotjs instead of FaNodeJs
+import Avatar from '../assets/avatar/Avatar.webp'
 
 
 // Define the structure for all static content
@@ -15,7 +17,7 @@ export interface ContentStructure {
     hero: {
         name: string;
         description: string;
-        profilePictureUrl: string;
+        profilePictureUrl: StaticImageData;
     };
     about: {
         title: string;
@@ -71,7 +73,7 @@ export const enContent: ContentStructure = {
     hero: {
         name: "Your Name Here",
         description: "Passionate Full-Stack Developer creating innovative web solutions.",
-        profilePictureUrl: "https://picsum.photos/200/200", // Use placeholder image
+        profilePictureUrl: Avatar, // Use placeholder image
     },
     about: {
         title: "About Me",
