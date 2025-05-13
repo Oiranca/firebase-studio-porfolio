@@ -2,7 +2,6 @@
 "use client"; // Add use client directive
 
 import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
 export function HeroSection() {
@@ -13,11 +12,11 @@ export function HeroSection() {
       <div className="container mx-auto px-4 flex flex-col items-center text-center">
         <div className="mb-8">
            <Image
-            src={content.hero.profilePictureUrl} // Use dynamic image URL
-            alt="Avatar" // Changed from "My Profile Picture"
+            src={content.hero.profilePictureUrl}
+            alt="Avatar"
             width={200}
             height={200}
-            className="rounded-full border-4 border-accent shadow-lg mx-auto"
+            className="rounded-full border-2 border-blue-500 shadow-lg mx-auto"
             priority
             data-ai-hint="profile avatar" // Added AI hint
           />
