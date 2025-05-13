@@ -85,7 +85,9 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-4 py-3 flex items-center justify-around">
+        <div className="hidden lg:flex items-center gap-2">
         {/* Theme Toggle Button */}
+
         <Button variant="ghost" size="sm" onClick={handleThemeToggle} aria-label={themeToggleButtonAriaLabel}>
            <div className="flex items-center justify-center w-5 mr-2">
              <FiSun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -94,14 +96,14 @@ export function Navbar() {
            <span className="dark:hidden">{content.themeButton.light}</span>
            <span className="hidden dark:inline">{content.themeButton.dark}</span>
         </Button>
-
+        </div>
         {/* Desktop Navigation - Centered */}
-        <div className="hidden md:flex flex-grow justify-center items-center gap-6">
+        <div className="hidden lg:flex flex-grow justify-center items-center gap-6">
           <NavContent isMobile={false} />
         </div>
 
         {/* Buttons on the right */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           {/* Language Toggle */}
           <Button
             variant="ghost"
@@ -122,7 +124,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile Controls */}
-        <div className="md:hidden flex items-center gap-2 ml-auto">
+        <div className="lg:hidden flex items-center gap-2 ml-auto">
           {/* Translation Toggle Button - Mobile (Icon Only) */}
           <Button
             variant="ghost"
@@ -156,13 +158,7 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
-               <SheetHeader className="mb-6 text-left">
-                 <SheetTitle>Navigation</SheetTitle>
-                 <SheetDescription>
-                   Links to different sections of the portfolio.
-                 </SheetDescription>
-               </SheetHeader>
-              <div className="flex flex-col items-stretch gap-4">
+              <div className="flex flex-col items-stretch gap-4 mt-32">
                 <NavContent isMobile={true} />
               </div>
             </SheetContent>
