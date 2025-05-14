@@ -158,6 +158,11 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] sm:w-[300px] bg-background p-6">
+
+              <SheetHeader className="mb-6 text-left">
+                <SheetTitle/>
+                <SheetDescription/>
+              </SheetHeader>
               <div className="flex flex-col items-stretch gap-4 mt-32">
                 <NavContent isMobile={true} />
               </div>

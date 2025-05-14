@@ -194,7 +194,7 @@ export const esContent: ContentStructure = {
     },
     about: {
         title: "Sobre Mí",
-        introduction: "Con más de 2 años de experiencia como desarrollador Full-Stack, me dedico a crear aplicaciones web centradas en el usuario. He trabajado en una variedad de proyectos, desde el desarrollo de funcionalidades para plataformas como AdoptaUnJunior  hasta la creación de plataformas complejas como Mymedesp o Characters Vault. Soy un apasionado de las nuevas tecnologías y disfruto mucho trabajando en equipo para desarrollar soluciones que tengan un impacto positivo.",
+        introduction: "Con más de dos años de experiencia como desarrollador, mi enfoque principal es el desarrollo web, complementado con conocimientos en backend. Me dedico a la creación de aplicaciones web intuitivas y a la optimización de la experiencia del usuario. A lo largo de mi trayectoria, he contribuido al desarrollo de funcionalidades clave para diversas plataformas y he participado en la creación de soluciones completas, abarcando tanto el frontend como el backend. Me considero un entusiasta de la exploración y aplicación de nuevas tecnologías, y estoy convencido de que el trabajo en equipo es fundamental para construir grandes soluciones.",
         // softSkillsTitle: "Habilidades Blandas",
         // softSkills: ["Comunicación Efectiva", "Resolución de Problemas", "Colaboración en Equipo", "Adaptabilidad", "Gestión del Tiempo", "Creatividad"],
     },
