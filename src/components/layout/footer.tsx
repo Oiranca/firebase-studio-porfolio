@@ -3,8 +3,6 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'; // Import react-icons
-import { cn } from '@/lib/utils';
 import { useLanguage } from '@/context/language-context'; // Import useLanguage hook
 
 export function Footer() {
@@ -19,8 +17,8 @@ export function Footer() {
         <p className="text-sm mb-4 text-center">{copyrightText}</p> {/* Use dynamic copyright */}
 
         {/* Sticky Social Icons for Desktop (Positioned independently) */}
-         <div className="hidden md:flex fixed bottom-4 left-4 flex-col gap-3 z-40 items-center justify-center"> {/* Added items-center and justify-center */}
-           {content.footer.socialLinks.map((link) => { // Use dynamic social links
+         <div className="hidden lg:flex fixed bottom-4 left-4 flex-col gap-3 z-40 items-center justify-center"> {/* Added items-center and justify-center */}
+           {content.socialLinks.map((link) => { // Use dynamic social links
             const IconComponent = link.icon; // Get the icon component from content
              return (
                 <Link
@@ -37,17 +35,6 @@ export function Footer() {
           })}
         </div>
 
-         {/* Social Icons in Footer for Mobile */}
-        <div className="md:hidden flex justify-center gap-4 mt-4"> {/* Added mt-4 for spacing */}
-          {content.footer.socialLinks.map((link) => { // Use dynamic social links
-             const IconComponent = link.icon; // Get the icon component from content
-            return (
-                <Link key={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
-                  <IconComponent className="h-6 w-6 text-muted-foreground hover:text-accent transition-colors" aria-label={link.name} />
-                </Link>
-            );
-          })}
-        </div>
       </div>
     </footer>
   );
