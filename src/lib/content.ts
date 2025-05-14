@@ -46,14 +46,13 @@ export interface ContentStructure {
     };
     footer: {
         copyright: string;
-
+        socialLinks: { name: string; href: string; icon: React.ElementType }[];
     };
     translationButton: {
         toSpanish: string;
         toEnglish: string;
         loading: string;
     };
-    socialLinks: { name: string; href: string; icon: React.ElementType }[];
 }
 
 
@@ -279,18 +278,16 @@ export const esContent: ContentStructure = {
     },
     footer: {
         copyright: "© {year} PersonaFlow. Todos los derechos reservados.",
-
+        socialLinks: [
+            {name: "GitHub", href: "#", icon: FaGithub},
+            {name: "LinkedIn", href: "#", icon: FaLinkedin},
+            {name: "Twitter", href: "#", icon: FaTwitter},
+        ]
     },
     translationButton: {
         toSpanish: "Ver en Español",
         toEnglish: "Ver en Inglés",
         loading: "Traduciendo...",
-    },
-
-    socialLinks: [
-        {name: "GitHub", href: "#", icon: FaGithub},
-        {name: "LinkedIn", href: "#", icon: FaLinkedin},
-        {name: "Twitter", href: "#", icon: FaTwitter},
-    ]
+    }
 };
 
